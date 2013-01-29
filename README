@@ -2,3 +2,18 @@ Vaccinekeeper Server Side Play App
 =====================================
 
 Vaccinekeeper is an easy to use tool for keeping track of your children's Vaccines.
+
+
+DB Setup info to run
+1) Start Mongo DB 
+	 'mongod'
+
+2) Connect via shell
+	 'mongo'
+
+3) Authenticate
+	 'use admin'
+	 'db.addUser("un","pwd")'
+
+4) Restart Mongo DB
+	 'mongod --auth'
