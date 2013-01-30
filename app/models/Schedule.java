@@ -23,11 +23,11 @@ public class Schedule {
 	}
 
 	private static long calcStart(Vaccine vaccine, long dob, int shot) {
-		return dob + vaccine.shots.get(shot-1).getStart()*msInMonth;
+		return dob + vaccine.shots.get(shot-1).start*msInMonth;
 	}
 
 	private static long calcEnd(Vaccine vaccine, long dob, int shot){
-		return dob + vaccine.shots.get(shot-1).getEnd()*msInMonth;
+		return dob + vaccine.shots.get(shot-1).end*msInMonth;
 	}
 
 }

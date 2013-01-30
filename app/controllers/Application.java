@@ -1,7 +1,6 @@
 package controllers;
 
-import java.util.List;
-
+import models.Child;
 import models.User;
 import models.Vaccine;
 import play.mvc.Controller;
@@ -24,7 +23,7 @@ public class Application extends Controller {
 		
 		
 //		This works
-		return ok(play.libs.Json.toJson("The route works but that's it"));
+		return ok(play.libs.Json.toJson(Child.findOne(childId)));
 		
 	}
 

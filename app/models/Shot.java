@@ -1,39 +1,15 @@
 package models;
 
 public class Shot {
-	private int no, start, end;
+	public int no;
+	public long start, end;
 
-	public Shot(int no, int start, int end) {
+	public Shot(int no, long start, long end) {
 		this.no = no;
 		this.start = start;
 		this.end = end;
 	}
 
 	public Shot() {
-		this(0, 0, 0);
-	}
-
-	public int getNo() {
-		return this.no;
-	}
-
-	public void setNo(int no) {
-		this.no = no;
-	}
-
-	public int getEnd() {
-		return this.end;
-	}
-
-	public void setEnd(int end) {
-		this.end = end;
-	}
-
-	public int getStart() {
-		return this.start;
-	}
-
-	public void setStart(int start) {
-		this.start = start;
 	}
 }

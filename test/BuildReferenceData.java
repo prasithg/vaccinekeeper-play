@@ -139,20 +139,20 @@ public class BuildReferenceData {
 				assertThat(hepB.shortName).isEqualTo("Hep B");
 				assertThat(hepB.longName).isEqualTo("Hepatitis B");
 				assertThat(hepB.shots.size()).isEqualTo(3);
-				assertThat(hepB.shots.get(2).getEnd()).isEqualTo(18);
+				assertThat(hepB.shots.get(2).end).isEqualTo(18);
 
 				Vaccine dTaP = Vaccine.findOneById(dTaPId);
 				assertThat(dTaP.shortName).isEqualTo("DTaP");
 				assertThat(dTaP.longName).isEqualTo(
 						"Diphtheria, Tetanus, acellular Pertussis");
 				assertThat(dTaP.shots.size()).isEqualTo(5);
-				assertThat(dTaP.shots.get(3).getStart()).isEqualTo(15);
+				assertThat(dTaP.shots.get(3).start).isEqualTo(15);
 
 				Vaccine hepA = Vaccine.findOneById(hepAId);
 				assertThat(hepA.shortName).isEqualTo("Hep A");
 				assertThat(hepA.longName).isEqualTo("Hepatitis A");
 				assertThat(hepA.shots.size()).isEqualTo(2);
-				assertThat(hepA.shots.get(1).getEnd()).isEqualTo(60);
+				assertThat(hepA.shots.get(1).end).isEqualTo(60);
 
 			}
 		});
