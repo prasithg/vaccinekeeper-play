@@ -61,7 +61,7 @@ public class Child {
 	}
 */		
 
-	public static List<Schedule> createSchedule(long dob){
+	public List<Schedule> createSchedule(long dob){
 		List<Schedule> list = new LinkedList<Schedule>();
 		list.add(new Schedule(vaccineColl().findOne(), 1, dob));
 		return list;
