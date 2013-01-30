@@ -17,5 +17,3 @@ DB Setup info to run
 
 4) Restart Mongo DB
 	 'mongod --auth'
-
-	 Michael
