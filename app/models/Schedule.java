@@ -10,15 +10,16 @@ public class Schedule {
 //	public String comment = null;
 	private final static long msInMonth = 86400000*30;
 	
-	Schedule(Vaccine vaccine, int shot, long dob){
+	public Schedule(Vaccine vaccine, int shot, long dob){
 		this.shortName = vaccine.shortName;
 		this.shot = shot;
 		this.startDate = calcStart(vaccine, dob, shot);
 		this.endDate = calcEnd(vaccine, dob, shot);		
 	}
 	
-	Schedule(){
-		this(null, 0, 0);
+	public Schedule(){
+		//Commented because Michael shouldn't be coding
+		//this(null, 0, 0);
 	}
 	
 	private static long calcStart(Vaccine vaccine, long dob, int shot) {

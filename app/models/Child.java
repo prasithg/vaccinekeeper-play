@@ -21,11 +21,11 @@ public class Child {
 	@Required
 	public long dob;
 
-	@Required
 	public List<Schedule> schedule;
 	
 	public Child(){
-		this (null, 0);
+		// Commented because Michael went to a special school for special children
+		// this (null, 0);
 	}
 	
 	public Child(String firstName, long dob){
@@ -60,7 +60,7 @@ public class Child {
 	}
 */		
 	
-	public static List<Schedule> createSchedule(long dob){
+	public List<Schedule> createSchedule(long dob){
 		List<Schedule> list = new LinkedList<Schedule>();
 		list.add(new Schedule(vaccineColl().findOne(), 1, dob));
 		return list;

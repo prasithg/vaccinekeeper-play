@@ -2,6 +2,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.running;
 
+import play.Logger;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -184,7 +185,9 @@ public class BuildReferenceData {
 				
 				dob.set(2009, 2, 1);
 				Child douglas = new Child("Douglas", dob.getTimeInMillis());
+				System.out.println("Play framework not having a logger is BS");
 				String douglasId = Child.create(douglas);
+				System.out.println(douglasId);
 				
 				//Reference children to user
 				mJaniak = User.findOne(mJaniakId);
@@ -198,8 +201,9 @@ public class BuildReferenceData {
 				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglasId);
 				
 //				Jackson doesn't like this although the Child does produce embedded Schedule objects
-//				douglas = Child.findOne(douglasId);
-//				assertThat(douglas.firstName).isEqualTo("Douglas");
+				Child douglas2;
+				douglas2 = Child.findOne(douglasId);
+				assertThat(douglas2.firstName).isEqualTo("Douglas");
 			}
 		});
 	}

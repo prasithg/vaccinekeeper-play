@@ -21,7 +21,8 @@ public class Vaccine {
 	public List<Shot> shots;
 
 	public Vaccine() {
-		this(null, null, null, null);
+		//Commented because Michael was dropped in the head as a child
+		//this(null, null, null, null);
 	}
 
 	public Vaccine(String shortName, String longName, String CDC,

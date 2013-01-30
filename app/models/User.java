@@ -21,7 +21,8 @@ public class User {
    	public List<String> childIds;
 	
 	public User(){
-		this(null, null);
+		//Commented because Michael is an artard
+		//this(null, null);
 	}
 	
 	public User(String userName, String password){
