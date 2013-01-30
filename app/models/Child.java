@@ -20,20 +20,21 @@ public class Child {
 	
 	@Required
 	public long dob;
-
+	
+	@Required
 	public List<Schedule> schedule;
 	
 	public Child(){
 		// Commented because Michael went to a special school for special children
 		// this (null, 0);
 	}
-	
+
 	public Child(String firstName, long dob){
 		this.firstName = firstName;
 		this.dob = dob;
 		this.schedule = createSchedule(dob);
 	}
-	
+
 	private static JacksonDBCollection<Child, String> childColl() {
 		return MongoDB.getCollection("Children", Child.class, String.class);
 	}
@@ -44,8 +45,8 @@ public class Child {
 
 //	This method works in creating schedule objects attached to the child object and I can see them in command prompt
 //	but when I run the unit test and try to call
-	
-	
+
+
 /*	public static List<Schedule> createSchedule(long dob){
 		List<Schedule> list = new LinkedList<Schedule>();
 		DBCursor<Vaccine> vaccines = vaccineColl().find();
@@ -59,22 +60,21 @@ public class Child {
 		return list;
 	}
 */		
-	
-	public List<Schedule> createSchedule(long dob){
+
+	public static List<Schedule> createSchedule(long dob){
 		List<Schedule> list = new LinkedList<Schedule>();
 		list.add(new Schedule(vaccineColl().findOne(), 1, dob));
 		return list;
 	}	
-	
-	
+
 	public static Child findOne(String id){
 		return childColl().findOneById(id);
 	}
-	
+
 	public static List<Child> all() {
 	    return childColl().find().toArray();
 	}
-	
+
 	public static String create(Child child) {
 	    return childColl().save(child).getSavedId();
 	}
@@ -82,7 +82,7 @@ public class Child {
 	public static void drop() {
 	    childColl().drop();
 	}
-	
+
 	public static boolean isEmpty(){
 		return childColl().findOne() == null ? true : false;
 	}
