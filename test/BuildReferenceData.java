@@ -200,8 +200,8 @@ public class BuildReferenceData {
 				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglasId);
 				
 //				Jackson doesn't like this although the Child does produce embedded Schedule objects
-//				douglas = Child.findOne(douglasId);
-//				assertThat(douglas.firstName).isEqualTo("Douglas");
+				douglas = Child.findOne(douglasId);
+				assertThat(douglas.firstName).isEqualTo("Douglas");
 			}
 		});
 	}
