@@ -2,11 +2,14 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.running;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import models.Child;
 import models.Shot;
 import models.TestTask;
+import models.User;
 import models.Vaccine;
 
 import org.junit.Test;
@@ -153,5 +156,53 @@ public class BuildReferenceData {
 			}
 		});
 	}
+	
+	
+	@Test
+	public void buildUsersAndChildren(){
+		running(fakeApplication(), new Runnable(){
+
+			@Override
+			public void run() {
+				
+				//Drop data
+				User.drop();
+				assertThat(User.isEmpty()).isTrue();
+				Child.drop();
+				assertThat(Child.isEmpty()).isTrue();
+
+				//Create and add user
+				User mJaniak = new User("Michael Janiak", "password");
+				String mJaniakId = User.create(mJaniak);
+				
+				//Create and save children
+				Calendar dob = Calendar.getInstance();
+
+				dob.set(2012, 0, 25);
+				Child adelaide = new Child("Adelaide", dob.getTimeInMillis());
+				String adelaideId = Child.create(adelaide);
+				
+				dob.set(2009, 2, 1);
+				Child douglas = new Child("Douglas", dob.getTimeInMillis());
+				String douglasId = Child.create(douglas);
+				
+				//Reference children to user
+				mJaniak = User.findOne(mJaniakId);
+				User.addChild(mJaniakId, adelaideId);
+				User.addChild(mJaniakId, douglasId);
+				
+				//Test children
+				mJaniak = User.findOne(mJaniakId);
+				assertThat(mJaniak.userName).isEqualTo("Michael Janiak");
+				assertThat(mJaniak.childIds.size()).isEqualTo(2);
+				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglasId);
+				
+//				Jackson doesn't like this although the Child does produce embedded Schedule objects
+				douglas = Child.findOne(douglasId);
+				assertThat(douglas.firstName).isEqualTo("Douglas");
+			}
+		});
+	}
+
 
 }

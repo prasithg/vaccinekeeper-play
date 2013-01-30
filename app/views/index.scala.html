@@ -1,12 +1,24 @@
-@(message: String)
+@(users: List[User])
 
 @import helper._
 
 
-@main("Todo list") {
+@main("VaccineKeeper") {
     
-	<h1>Vaccines</h1>
-	<p>@message</p>
+	<h1>VaccineKeeper</h1>
+	<h2>Immunizing America since 2012</h2>
 	<a href="@routes.Application.genericSchedule">@routes.Application.genericSchedule</a>
-
+	<h2>Users</h2>
+	<ul>
+		@for(user <- users){
+			<li>
+				<h3>@user.userName</h3>
+				<ul>
+					@for(childId <- user.childIds){
+						<li><a href="@routes.Application.getChild(childId)">@childId</a></li>
+					}
+				</ul>
+			</li>
+		}
+	</ul>
 }

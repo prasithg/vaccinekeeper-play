@@ -55,8 +55,7 @@ public class Vaccine {
 	 * @return the String id of the persisted object
 	 */
 	public static String create(Vaccine vaccine) {
-		WriteResult<Vaccine, String> result = collection().save(vaccine);
-		return result.getSavedId();
+		return collection().save(vaccine).getSavedId();
 	}
 
 	public static void delete(String id) {

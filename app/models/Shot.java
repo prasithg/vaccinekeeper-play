@@ -13,13 +13,6 @@ public class Shot {
 		this(0, 0, 0);
 	}
 
-	public Shot setAll(int no, int start, int end) {
-		this.no = no;
-		this.start = start;
-		this.end = end;
-		return this;
-	}
-
 	public int getNo() {
 		return this.no;
 	}
