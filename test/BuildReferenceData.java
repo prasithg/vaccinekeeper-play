@@ -134,20 +134,20 @@ public class BuildReferenceData {
 				Vaccine.create(new Vaccine("MCV4", "MeningoCoccal", null, shots));
 
 				// Retrieve and check
-				Vaccine hepB = Vaccine.findOne(hepBId);
+				Vaccine hepB = Vaccine.findOneById(hepBId);
 				assertThat(hepB.shortName).isEqualTo("Hep B");
 				assertThat(hepB.longName).isEqualTo("Hepatitis B");
 				assertThat(hepB.shots.size()).isEqualTo(3);
 				assertThat(hepB.shots.get(2).getEnd()).isEqualTo(18);
 
-				Vaccine dTaP = Vaccine.findOne(dTaPId);
+				Vaccine dTaP = Vaccine.findOneById(dTaPId);
 				assertThat(dTaP.shortName).isEqualTo("DTaP");
 				assertThat(dTaP.longName).isEqualTo(
 						"Diphtheria, Tetanus, acellular Pertussis");
 				assertThat(dTaP.shots.size()).isEqualTo(5);
 				assertThat(dTaP.shots.get(3).getStart()).isEqualTo(15);
 
-				Vaccine hepA = Vaccine.findOne(hepAId);
+				Vaccine hepA = Vaccine.findOneById(hepAId);
 				assertThat(hepA.shortName).isEqualTo("Hep A");
 				assertThat(hepA.longName).isEqualTo("Hepatitis A");
 				assertThat(hepA.shots.size()).isEqualTo(2);
@@ -179,11 +179,13 @@ public class BuildReferenceData {
 				Calendar dob = Calendar.getInstance();
 
 				dob.set(2012, 0, 25);
-				Child adelaide = new Child("Adelaide", dob.getTimeInMillis());
+				Child adelaide = new Child("Adelaide", dob.getTimeInMillis() /*, 
+						Child.createSchedule(Vaccine.findOne(), dob.getTimeInMillis()) */);
 				String adelaideId = Child.create(adelaide);
 				
 				dob.set(2009, 2, 1);
-				Child douglas = new Child("Douglas", dob.getTimeInMillis());
+				Child douglas = new Child("Douglas" , dob.getTimeInMillis() /*, 
+						Child.createSchedule(Vaccine.findOne(), dob.getTimeInMillis())*/ );
 				String douglasId = Child.create(douglas);
 				
 				//Reference children to user

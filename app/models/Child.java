@@ -21,26 +21,23 @@ public class Child {
 	@Required
 	public long dob;
 
-	@Required
-	public List<Schedule> schedule;
+//	@Required
+//	public List<Schedule> record;
 	
 	public Child(){
-		this (null, 0);
+		this (null, 0 /*, null*/ );
 	}
 	
-	public Child(String firstName, long dob){
+	public Child(String firstName, long dob /*, List<Schedule> record */ ){
 		this.firstName = firstName;
 		this.dob = dob;
-		this.schedule = createSchedule(dob);
+//		this.record = record;
 	}
 	
 	private static JacksonDBCollection<Child, String> childColl() {
 		return MongoDB.getCollection("Children", Child.class, String.class);
 	}
 
-	private static JacksonDBCollection<Vaccine, String> vaccineColl() {
-		return MongoDB.getCollection("Vaccines", Vaccine.class, String.class);
-	}
 
 //	This method works in creating schedule objects attached to the child object and I can see them in command prompt
 //	but when I run the unit test and try to call
@@ -60,9 +57,10 @@ public class Child {
 	}
 */		
 	
-	public static List<Schedule> createSchedule(long dob){
+	public static List<Schedule> createSchedule(Vaccine vaccine, long dob){
 		List<Schedule> list = new LinkedList<Schedule>();
-		list.add(new Schedule(vaccineColl().findOne(), 1, dob));
+//		Vaccine vaccine = vaccineColl().findOne();
+		list.add(new Schedule(vaccine, 1, dob));
 		return list;
 	}	
 	

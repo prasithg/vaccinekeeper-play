@@ -24,8 +24,7 @@ public class Vaccine {
 		this(null, null, null, null);
 	}
 
-	public Vaccine(String shortName, String longName, String CDC,
-			List<Shot> shots) {
+	public Vaccine(String shortName, String longName, String CDC, List<Shot> shots) {
 		this.shortName = shortName;
 		this.longName = longName;
 		this.CDC = CDC;
@@ -44,9 +43,14 @@ public class Vaccine {
 		return collection().find().toArray();
 	}
 
-	public static Vaccine findOne(String id) {
+	public static Vaccine findOneById(String id) {
 		return collection().findOneById(id);
 	}
+	
+	public static Vaccine findOne() {
+		return collection().findOne();
+	}
+
 
 	/**
 	 * Persists a Vaccine object
