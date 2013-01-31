@@ -41,8 +41,8 @@ public class User {
 		return MongoDB.getCollection("Users", User.class, String.class);
 	}
 
-	public static void addChild(String _id, String childId){
-		userColl().updateById(_id, DBUpdate.push("childIds", childId));		
+	public static void addChild(String userId, String childId){
+		userColl().updateById(userId, DBUpdate.push("childIds", childId));		
 	}
 
 	public static boolean isEmpty(){
@@ -62,9 +62,8 @@ public class User {
 	}
 
 	
-	public static String create(User user) {
-	    WriteResult<User, String> result = userColl().save(user);
-	    return result.getSavedId();
+	public static User create(User user) {
+	    return userColl().save(user).getSavedObject();
 	}
 	
 	public static String update(User user){

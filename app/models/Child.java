@@ -73,8 +73,8 @@ public class Child {
 	    return childColl().find().toArray();
 	}
 
-	public static String create(Child child) {
-	    return childColl().save(child).getSavedId();
+	public static Child create(Child child) {
+	    return childColl().save(child).getSavedObject();
 	}
 
 	public static void drop() {

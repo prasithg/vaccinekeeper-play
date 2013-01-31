@@ -174,52 +174,50 @@ public class BuildReferenceData {
 
 				//Create and add user
 				User mJaniak = new User("Michael Janiak", "michael@vaccinekeeper.com","password");
-				String mJaniakId = User.create(mJaniak);
+				mJaniak = User.create(mJaniak);
 				
 				//Create and save children
 				Calendar dob = Calendar.getInstance();
 				
 				dob.set(2012, 0, 25);
 				Child adelaide = new Child("Adelaide", dob.getTimeInMillis(), Child.Sex.FEMALE);
-				String adelaideId = Child.create(adelaide);
+				adelaide = Child.create(adelaide);
 				
 				dob.set(2009, 2, 1);
 				Child douglas = new Child("Douglas", dob.getTimeInMillis(), Child.Sex.MALE);
-				String douglasId = Child.create(douglas);
+				douglas = Child.create(douglas);
 				
-				//Reference children to user
-				mJaniak = User.findOneById(mJaniakId);
-				User.addChild(mJaniakId, adelaideId);
-				User.addChild(mJaniakId, douglasId);
+				//Reference children to user and refresh user
+				User.addChild(mJaniak._id, adelaide._id);
+				User.addChild(mJaniak._id, douglas._id);
+				mJaniak = User.findOneById(mJaniak._id);
 
 				
 				//Create and add user
 				User pGovin = new User("Prasith Govin", "prasith@vaccinekeeper.com", "password");
-				String pGovinId = User.create(pGovin);
+				pGovin = User.create(pGovin);
 				
 				//Create and save children			
 				dob.set(2009, 8, 25);
 				Child samina = new Child("Samina", dob.getTimeInMillis(), Child.Sex.FEMALE);
-				String saminaId = Child.create(samina);
+				samina = Child.create(samina);
 				
 				dob.set(2010, 8, 14);
 				Child barry = new Child("Barry", dob.getTimeInMillis(), Child.Sex.MALE);
-				String barryId = Child.create(barry);
+				barry = Child.create(barry);
 				
 				//Reference children to user
-				pGovin = User.findOneById(pGovinId);
-				User.addChild(pGovinId, saminaId);
-				User.addChild(pGovinId, barryId);
+				User.addChild(pGovin._id, samina._id);
+				User.addChild(pGovin._id, barry._id);
+				pGovin = User.findOneById(pGovin._id);
 
 				
 				//Test children
-				mJaniak = User.findOneById(mJaniakId);
 				assertThat(mJaniak.userName).isEqualTo("Michael Janiak");
 				assertThat(mJaniak.childIds.size()).isEqualTo(2);
-				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglasId);
+				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglas._id);
 				
-//				Jackson doesn't like this although the Child does produce embedded Schedule objects
-				Child douglas2 = Child.findOne(douglasId);
+				Child douglas2 = Child.findOne(douglas._id);
 				assertThat(douglas2.firstName).isEqualTo("Douglas");
 
 			}
