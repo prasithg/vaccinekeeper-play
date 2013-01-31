@@ -1,4 +1,4 @@
-@(users: List[User])
+@(families: List[Family])
 
 @import helper._
 
@@ -10,12 +10,12 @@
 	<a href="@routes.Application.genericSchedule">@routes.Application.genericSchedule</a>
 	<h2>Users</h2>
 	<ul>
-		@for(user <- users){
+		@for(family <- families){
 			<li>
-				<h3>@user.userName</h3>
+				<h3>@family.user.userName</h3>
 				<ul>
-					@for(childId <- user.childIds){
-						<li><a href="@routes.Application.getChild(childId)">@childId</a></li>
+					@for(child <- family.children){
+						<li><a href="@routes.Application.getChild(child._id)">@child.firstName</a></li>
 					}
 				</ul>
 			</li>
