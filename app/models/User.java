@@ -16,26 +16,23 @@ public class User {
 	@ObjectId
 	public String _id;
 	
-	@Required
-	public String userName, password;
-
 	@Required @Email
-	public String email;
+	public String userNameEmail;
+
+	@Required
+	public String password;
+	
 	public String firstName, lastName;
 	
    	public List<String> childIds;
    	
 	public User(){
-		//Commented because Michael is an artard
-		//this(null, null);
 	}
 	
-	public User(String userName, String email, String password){
-		this.userName=userName;
+	public User(String userNameEmail, String password){
+		this.userNameEmail=userNameEmail;
 		this.password=password;
-		this.email = email;
 	}
-	
 	
 	private static JacksonDBCollection<User, String> userColl() {
 		return MongoDB.getCollection("Users", User.class, String.class);

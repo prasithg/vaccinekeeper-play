@@ -173,7 +173,7 @@ public class BuildReferenceData {
 				assertThat(Child.isEmpty()).isTrue();
 
 				//Create and add user
-				User mJaniak = new User("Michael Janiak", "michael@vaccinekeeper.com","password");
+				User mJaniak = new User("michael@vaccinekeeper.com","password");
 				mJaniak = User.create(mJaniak);
 				
 				//Create and save children
@@ -194,7 +194,7 @@ public class BuildReferenceData {
 
 				
 				//Create and add user
-				User pGovin = new User("Prasith Govin", "prasith@vaccinekeeper.com", "password");
+				User pGovin = new User("prasith@vaccinekeeper.com", "password");
 				pGovin = User.create(pGovin);
 				
 				//Create and save children			
@@ -213,7 +213,7 @@ public class BuildReferenceData {
 
 				
 				//Test children
-				assertThat(mJaniak.userName).isEqualTo("Michael Janiak");
+				assertThat(mJaniak.userNameEmail).isEqualTo("michael@vaccinekeeper.com");
 				assertThat(mJaniak.childIds.size()).isEqualTo(2);
 				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglas._id);
 				

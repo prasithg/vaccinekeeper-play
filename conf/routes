@@ -11,7 +11,12 @@ GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 
 # Users controller
 GET		/users						controllers.Users.index()
+
+POST	/register					controllers.Users.registerUser()
+#POST    /projects/:project/tasks	controllers.Tasks.add(project: Long, folder: String)
+
 GET		/child/:id					controllers.Users.getChild(id: String)
+
 
 
 # Map static resources from the /public folder to the /assets URL path

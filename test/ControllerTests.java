@@ -1,15 +1,6 @@
 import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.OK;
-import static play.test.Helpers.GET;
-import static play.test.Helpers.callAction;
-import static play.test.Helpers.charset;
-import static play.test.Helpers.contentAsString;
-import static play.test.Helpers.contentType;
-import static play.test.Helpers.fakeApplication;
-import static play.test.Helpers.fakeRequest;
-import static play.test.Helpers.routeAndCall;
-import static play.test.Helpers.running;
-import static play.test.Helpers.status;
+import static play.test.Helpers.*;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,6 +10,7 @@ import models.Child;
 import models.Family;
 import models.User;
 
+import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
 
 import play.mvc.Content;
@@ -29,10 +21,8 @@ public class ControllerTests {
 	//Test router
 	@Test
 	public void testHomeRoute(){
-		
 		Result result = routeAndCall(fakeRequest(GET, "/"));
 		assertThat(result).isNotNull();
-
 	}
 
 	//Test a template
@@ -72,7 +62,7 @@ public class ControllerTests {
 				assertThat(charset(result)).isEqualTo("utf-8");
 				
 //				JSON test gives me an error about dispatchers
-				assertThat(play.libs.Json.parse(contentAsString(result)).get(0).get("shortName").toString().replace("\"", "")).isEqualTo("Hep B");
+				assertThat(play.libs.Json.parse(contentAsString(result)).get(0).get("shortName").asText()).isEqualTo("Hep B");
 			}
 		});
 	}
@@ -85,9 +75,33 @@ public class ControllerTests {
 			public void run() {
 				Child child = Child.findOne();
 				Result result = callAction(controllers.routes.ref.Users.getChild(child._id));
-				assertThat(play.libs.Json.parse(contentAsString(result)).get("firstName").toString().replace("\"", "")).isEqualTo(child.firstName);
+				assertThat(play.libs.Json.parse(contentAsString(result)).get("firstName").asText()).isEqualTo(child.firstName);
+				
 			}
 		});
 	}
+
+	//Test post
+	@Test
+	public void callRegisterUser(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\"steve@apple.com\"," +
+						"								\"password\":\"password\"}");
+				
+				Result result = routeAndCall(fakeRequest(POST, "/register")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(node));
+
+				//At the moment, we're redirecting, so the content is empty
+				assertThat(contentAsString(result)).isEmpty();
+			}
+		});
+	}
+	
+	
+
+	
 
 }

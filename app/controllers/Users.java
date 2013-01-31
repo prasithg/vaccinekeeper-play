@@ -3,12 +3,16 @@ package controllers;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import org.codehaus.jackson.JsonNode;
 
 import models.Child;
 import models.Family;
 import models.User;
 import models.Vaccine;
 import play.mvc.Controller;
+import play.mvc.Http.RequestBody;
 import play.mvc.Result;
 
 public class Users extends Controller {
@@ -17,6 +21,13 @@ public class Users extends Controller {
 		return ok(views.html.index.render(getFamilies()));
 	}
 
+	public static Result registerUser(){
+		JsonNode node = request().body().asJson();
+		User user = new User(node.get("userNameEmail").asText(), node.get("password").asText());
+		User.create(user);
+		return redirect(routes.Users.index());
+	}
+	
 	public static Result getChild(String childId){
 		return ok(play.libs.Json.toJson(Child.findOneById(childId)));
 	}
@@ -28,7 +39,8 @@ public class Users extends Controller {
 		while(users.hasNext()){
 			User user = users.next();
 			List<Child> children = new LinkedList<Child>();
-			Iterator<String> childIds = user.childIds.iterator();
+			Iterator<String> childIds = new LinkedList<String>().iterator();
+			if(user.childIds != null) childIds = user.childIds.iterator();
 			while(childIds.hasNext()){
 				children.add(Child.findOneById(childIds.next()));
 			}
