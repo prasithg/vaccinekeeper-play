@@ -6,7 +6,7 @@
 GET     /                           controllers.Application.index()
 
 # Tasks
-GET		/genericSchedule		    controllers.Application.genericSchedule()
+GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 GET		/child/:id					controllers.Application.getChild(id: String)
 
 

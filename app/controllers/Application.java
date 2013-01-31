@@ -17,13 +17,8 @@ public class Application extends Controller {
 		return ok(views.html.index.render(getFamilies()));
 	}
 
-	public static Result genericSchedule() {
-		return ok(play.libs.Json.toJson(Vaccine.all()));
-	}
-
 	public static Result getChild(String childId){
 		return ok(play.libs.Json.toJson(Child.findOne(childId)));
-		
 	}
 
 	private static List<Family> getFamilies(){

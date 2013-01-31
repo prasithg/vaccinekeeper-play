@@ -58,7 +58,7 @@ public class ControllerTests {
 			@Override
 			public void run() {
 //				Content html = views.html.index.render("test");
-				Result result = callAction(controllers.routes.ref.Application.genericSchedule());
+				Result result = callAction(controllers.routes.ref.Vaccines.genericSchedule());
 				assertThat(status(result)).isEqualTo(OK);
 				assertThat(contentType(result)).isEqualTo("application/json");
 				assertThat(charset(result)).isEqualTo("utf-8");
