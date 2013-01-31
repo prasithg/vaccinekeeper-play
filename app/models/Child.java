@@ -51,27 +51,17 @@ public class Child {
 		return MongoDB.getCollection("Vaccines", Vaccine.class, String.class);
 	}
 
-//	This method works in creating schedule objects attached to the child object and I can see them in command prompt
-//	but when I run the unit test and try to call
-
-
-/*	public static List<Schedule> createSchedule(long dob){
+	public List<Schedule> createSchedule(long dob){
+		
 		List<Schedule> list = new LinkedList<Schedule>();
 		DBCursor<Vaccine> vaccines = vaccineColl().find();
 		while(vaccines.hasNext()){
 			Vaccine vaccine = vaccines.next();
 			Iterator<Shot> shots = vaccine.shots.iterator();
 			while (shots.hasNext()){
-				list.add(new Schedule(vaccine, shots.next().getNo(), dob));
+				list.add(new Schedule(vaccine, shots.next().no, dob));
 			}
 		}		
-		return list;
-	}
-*/		
-
-	public List<Schedule> createSchedule(long dob){
-		List<Schedule> list = new LinkedList<Schedule>();
-		list.add(new Schedule(vaccineColl().findOne(), 1, dob));
 		return list;
 	}	
 
