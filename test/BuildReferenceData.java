@@ -193,6 +193,26 @@ public class BuildReferenceData {
 				mJaniak = User.findOne(mJaniakId);
 				User.addChild(mJaniakId, adelaideId);
 				User.addChild(mJaniakId, douglasId);
+
+				
+				//Create and add user
+				User pGovin = new User("Prasith Govin", "password");
+				String pGovinId = User.create(pGovin);
+				
+				//Create and save children			
+				dob.set(2009, 8, 25);
+				Child samina = new Child("Samina", dob.getTimeInMillis(), Child.Sex.FEMALE);
+				String saminaId = Child.create(samina);
+				
+				dob.set(2010, 8, 14);
+				Child barry = new Child("Barry", dob.getTimeInMillis(), Child.Sex.MALE);
+				String barryId = Child.create(barry);
+				
+				//Reference children to user
+				pGovin = User.findOne(pGovinId);
+				User.addChild(pGovinId, saminaId);
+				User.addChild(pGovinId, barryId);
+
 				
 				//Test children
 				mJaniak = User.findOne(mJaniakId);
