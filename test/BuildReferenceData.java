@@ -173,7 +173,7 @@ public class BuildReferenceData {
 				assertThat(Child.isEmpty()).isTrue();
 
 				//Create and add user
-				User mJaniak = new User("Michael Janiak", "password");
+				User mJaniak = new User("Michael Janiak", "michael@vaccinekeeper.com","password");
 				String mJaniakId = User.create(mJaniak);
 				
 				//Create and save children
@@ -196,7 +196,7 @@ public class BuildReferenceData {
 
 				
 				//Create and add user
-				User pGovin = new User("Prasith Govin", "password");
+				User pGovin = new User("Prasith Govin", "prasith@vaccinekeeper.com", "password");
 				String pGovinId = User.create(pGovin);
 				
 				//Create and save children			

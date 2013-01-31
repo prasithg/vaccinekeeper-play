@@ -6,6 +6,7 @@ import net.vz.mongodb.jackson.DBUpdate;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import net.vz.mongodb.jackson.WriteResult;
+import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
 import play.modules.mongodb.jackson.MongoDB;
 //import org.bson.types.ObjectId;
@@ -16,7 +17,10 @@ public class User {
 	public String _id;
 	
 	@Required
-	public String userName, password;	
+	public String userName, password;
+
+	@Required @Email
+	public String email;
 	public String firstName, lastName;
 	
    	public List<String> childIds;
@@ -26,9 +30,10 @@ public class User {
 		//this(null, null);
 	}
 	
-	public User(String userName, String password){
+	public User(String userName, String email, String password){
 		this.userName=userName;
 		this.password=password;
+		this.email = email;
 	}
 	
 	
