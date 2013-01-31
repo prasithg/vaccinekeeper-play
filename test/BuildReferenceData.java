@@ -180,11 +180,11 @@ public class BuildReferenceData {
 				Calendar dob = Calendar.getInstance();
 				
 				dob.set(2012, 0, 25);
-				Child adelaide = new Child("Adelaide", dob.getTimeInMillis());
+				Child adelaide = new Child("Adelaide", dob.getTimeInMillis(), Child.Sex.FEMALE);
 				String adelaideId = Child.create(adelaide);
 				
 				dob.set(2009, 2, 1);
-				Child douglas = new Child("Douglas", dob.getTimeInMillis());
+				Child douglas = new Child("Douglas", dob.getTimeInMillis(), Child.Sex.MALE);
 				System.out.println("Play framework not having a logger is BS");
 				String douglasId = Child.create(douglas);
 				System.out.println(douglasId);

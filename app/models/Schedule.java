@@ -6,8 +6,8 @@ public class Schedule {
 	public int shot;
 	public long startDate, endDate;
 	public long scheduledDate;
-//	public boolean cancelled, complete = false;
-//	public String comment = null;
+	public boolean cancelled, complete = false;
+	public String comment;
 	private final static long msInMonth = 86400000*30;
 
 	Schedule(Vaccine vaccine, int shot, long dob){
@@ -18,8 +18,6 @@ public class Schedule {
 	}
 
 	public Schedule(){
-		//Commented because Michael shouldn't be coding
-		//this(null, 0, 0);
 	}
 
 	private static long calcStart(Vaccine vaccine, long dob, int shot) {

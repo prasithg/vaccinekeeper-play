@@ -21,18 +21,26 @@ public class Child {
 	@Required
 	public long dob;
 	
+	public enum Sex {MALE, FEMALE}
+	
+	@Required
+	public Sex sex;
+	
 	@Required
 	public List<Schedule> schedule;
+
+	public List<Stat> stats;
 	
 	public Child(){
 		// Commented because Michael went to a special school for special children
 		// this (null, 0);
 	}
 
-	public Child(String firstName, long dob){
+	public Child(String firstName, long dob, Sex sex){
 		this.firstName = firstName;
 		this.dob = dob;
 		this.schedule = createSchedule(dob);
+		this.sex = sex;
 	}
 
 	private static JacksonDBCollection<Child, String> childColl() {

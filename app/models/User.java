@@ -17,9 +17,10 @@ public class User {
 	
 	@Required
 	public String userName, password;	
+	public String firstName, lastName;
 	
    	public List<String> childIds;
-	
+   	
 	public User(){
 		//Commented because Michael is an artard
 		//this(null, null);
