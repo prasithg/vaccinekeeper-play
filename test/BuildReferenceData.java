@@ -185,12 +185,10 @@ public class BuildReferenceData {
 				
 				dob.set(2009, 2, 1);
 				Child douglas = new Child("Douglas", dob.getTimeInMillis(), Child.Sex.MALE);
-				System.out.println("Play framework not having a logger is BS");
 				String douglasId = Child.create(douglas);
-				System.out.println(douglasId);
 				
 				//Reference children to user
-				mJaniak = User.findOne(mJaniakId);
+				mJaniak = User.findOneById(mJaniakId);
 				User.addChild(mJaniakId, adelaideId);
 				User.addChild(mJaniakId, douglasId);
 
@@ -209,13 +207,13 @@ public class BuildReferenceData {
 				String barryId = Child.create(barry);
 				
 				//Reference children to user
-				pGovin = User.findOne(pGovinId);
+				pGovin = User.findOneById(pGovinId);
 				User.addChild(pGovinId, saminaId);
 				User.addChild(pGovinId, barryId);
 
 				
 				//Test children
-				mJaniak = User.findOne(mJaniakId);
+				mJaniak = User.findOneById(mJaniakId);
 				assertThat(mJaniak.userName).isEqualTo("Michael Janiak");
 				assertThat(mJaniak.childIds.size()).isEqualTo(2);
 				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglasId);

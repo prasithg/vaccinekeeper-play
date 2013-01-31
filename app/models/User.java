@@ -53,10 +53,15 @@ public class User {
 	    return userColl().find().toArray();
 	}
 	
-	public static User findOne(String id){
+	public static User findOneById(String id){
 		return userColl().findOneById(id);
 	}
 
+	public static User findOne(){
+		return userColl().findOne();
+	}
+
+	
 	public static String create(User user) {
 	    WriteResult<User, String> result = userColl().save(user);
 	    return result.getSavedId();
