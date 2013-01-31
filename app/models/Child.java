@@ -65,8 +65,12 @@ public class Child {
 		return list;
 	}	
 
-	public static Child findOne(String id){
+	public static Child findOneById(String id){
 		return childColl().findOneById(id);
+	}
+
+	public static Child findOne(){
+		return childColl().findOne();
 	}
 
 	public static List<Child> all() {

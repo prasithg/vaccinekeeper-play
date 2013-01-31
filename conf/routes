@@ -5,10 +5,13 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-# Tasks
+# Vaccine controller
 GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
-GET		/child/:id					controllers.Application.getChild(id: String)
 
+
+# Users controller
+GET		/users						controllers.Users.index()
+GET		/child/:id					controllers.Users.getChild(id: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

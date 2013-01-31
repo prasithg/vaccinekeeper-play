@@ -217,7 +217,7 @@ public class BuildReferenceData {
 				assertThat(mJaniak.childIds.size()).isEqualTo(2);
 				assertThat(mJaniak.childIds.get(1)).isEqualTo(douglas._id);
 				
-				Child douglas2 = Child.findOne(douglas._id);
+				Child douglas2 = Child.findOneById(douglas._id);
 				assertThat(douglas2.firstName).isEqualTo("Douglas");
 
 			}

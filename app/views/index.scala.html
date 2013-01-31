@@ -15,7 +15,7 @@
 				<h3>@family.user.userName</h3>
 				<ul>
 					@for(child <- family.children){
-						<li><a href="@routes.Application.getChild(child._id)">@child.firstName</a></li>
+						<li><a href="@routes.Users.getChild(child._id)">@child.firstName</a></li>
 					}
 				</ul>
 			</li>

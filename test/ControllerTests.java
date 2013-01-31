@@ -26,7 +26,15 @@ import play.mvc.Result;
 
 public class ControllerTests {
 
-	
+	//Test router
+	@Test
+	public void testHomeRoute(){
+		
+		Result result = routeAndCall(fakeRequest(GET, "/"));
+		assertThat(result).isNotNull();
+
+	}
+
 	//Test a template
 	@Test
 	public void renderIndex() {
@@ -40,7 +48,7 @@ public class ControllerTests {
 				
 				Iterator<String> childIds = user.childIds.iterator();
 				while(childIds.hasNext()){
-					children.add(Child.findOne(childIds.next()));
+					children.add(Child.findOneById(childIds.next()));
 				}
 				Family family = new Family(user, children);
 				families.add(family);
@@ -69,19 +77,17 @@ public class ControllerTests {
 		});
 	}
 
-	//Test router
+	//Test getChild
 	@Test
-	public void testGenericScheduleRoute(){		
+	public void callGetChild(){
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
-				Result result = routeAndCall(fakeRequest(GET, "/genericSchedule"));
-				assertThat(result).isNotNull();
+				Child child = Child.findOne();
+				Result result = callAction(controllers.routes.ref.Users.getChild(child._id));
+				assertThat(play.libs.Json.parse(contentAsString(result)).get("firstName").toString().replace("\"", "")).isEqualTo(child.firstName);
 			}
 		});
 	}
-
-
-	
 
 }
