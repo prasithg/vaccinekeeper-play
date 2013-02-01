@@ -22,24 +22,14 @@ public class Users extends Controller {
 	}
 
 	public static Result registerUser(){
-		//Get request and node
 		JsonNode node = request().body().asJson();
 		String userNameEmail = node.get("userNameEmail").asText();
+		User user = User.findByUserName(userNameEmail);
+
+		//If user exists send an error
+		if(user!=null) return badRequest("A user with the email "+userNameEmail+" already exists");
 		
-		//Test if userNameEmail exists in database
-		
-		
-		
-		
-		//Create user OR
-		
-		User user = new User(userNameEmail, node.get("password").asText());
-		
-		
-		
-		//Redirect user
-		
-		
+		user = new User(userNameEmail, node.get("password").asText());
 		User.create(user);
 		return redirect(routes.Users.index());
 	}

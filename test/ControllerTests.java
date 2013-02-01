@@ -1,5 +1,5 @@
 import static org.fest.assertions.Assertions.assertThat;
-import static play.mvc.Http.Status.OK;
+import static play.mvc.Http.Status.*;
 import static play.test.Helpers.*;
 
 import java.util.Iterator;
@@ -14,6 +14,7 @@ import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
 
 import play.mvc.Content;
+import play.mvc.Http.Status;
 import play.mvc.Result;
 
 public class ControllerTests {
@@ -96,6 +97,18 @@ public class ControllerTests {
 
 				//At the moment, we're redirecting, so the content is empty
 				assertThat(contentAsString(result)).isEmpty();
+				assertThat(status(result)).isEqualTo(Status.SEE_OTHER);
+
+				node = play.libs.Json.parse("{	\"userNameEmail\":\"steve@apple.com\"," +
+						"								\"password\":\"password\"}");
+				
+				result = routeAndCall(fakeRequest(POST, "/register")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(node));
+
+				assertThat(status(result)).isEqualTo(Status.BAD_REQUEST);
+
+				
 			}
 		});
 	}
