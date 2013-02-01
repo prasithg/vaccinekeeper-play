@@ -88,7 +88,10 @@ public class ControllerTests {
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
-				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\"steve@apple.com\"," +
+				
+				//This test is inconsistent because it depends on the order that the tests are run in
+				//Need a delete user to clear out bill.gates if he exists
+				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\"bill.gates@microsoft.com\"," +
 						"								\"password\":\"password\"}");
 				
 				Result result = routeAndCall(fakeRequest(POST, "/register")
@@ -97,7 +100,7 @@ public class ControllerTests {
 
 				assertThat(status(result)).isEqualTo(Status.SEE_OTHER);
 
-				node = play.libs.Json.parse("{	\"userNameEmail\":\"steve@apple.com\"," +
+				node = play.libs.Json.parse("{	\"userNameEmail\":\"bill.gates@microsoft.com\"," +
 						"								\"password\":\"password\"}");
 				
 				result = routeAndCall(fakeRequest(POST, "/register")
@@ -111,6 +114,7 @@ public class ControllerTests {
 		});
 	}
 	
+	//Test schedule
 	@Test
 	public void callUpdateSchedule(){
 		running(fakeApplication(), new Runnable(){

@@ -6,13 +6,16 @@ import java.util.List;
 
 import models.Child;
 import models.Family;
-import models.Schedule;
 import models.User;
 
 import org.codehaus.jackson.JsonNode;
 
+import play.data.validation.Constraints.EmailValidator;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Results;
+import play.mvc.BodyParser;                     
+
 
 public class Users extends Controller {
 
@@ -20,18 +23,30 @@ public class Users extends Controller {
 		return ok(views.html.index.render(getFamilies()));
 	}
 
-	public static Result registerUser(){
-		JsonNode node = request().body().asJson();
-		String userNameEmail = node.get("userNameEmail").asText();
-		User user = User.findByUserName(userNameEmail);
 
-		//If user exists send an error
-		if(user!=null) return badRequest("A user with the email "+userNameEmail+" already exists");
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result registerUser(){
+		JsonNode json = request().body().asJson();
 		
-		user = new User(userNameEmail, node.get("password").asText());
+		String userName = json.findPath("userNameEmail").getTextValue();
+		if(userName==null) return Results.notFound("Missing userNameEmail");
+		
+		String password = json.findPath("password").getTextValue();
+		if(password==null) return Results.notFound("Missing password");
+
+		User user = new User(userName, password);
+		String validation = user.validate();
+		
+		if(validation!= null) return Results.notFound(validation);
+		
 		User.create(user);
 		return redirect(routes.Users.index());
 	}
+	
+	
+	
+	
+	
 	
 	public static Result getChild(String childId){
 		return ok(play.libs.Json.toJson(Child.findOneById(childId)));
