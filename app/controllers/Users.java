@@ -22,8 +22,24 @@ public class Users extends Controller {
 	}
 
 	public static Result registerUser(){
+		//Get request and node
 		JsonNode node = request().body().asJson();
-		User user = new User(node.get("userNameEmail").asText(), node.get("password").asText());
+		String userNameEmail = node.get("userNameEmail").asText();
+		
+		//Test if userNameEmail exists in database
+		
+		
+		
+		
+		//Create user OR
+		
+		User user = new User(userNameEmail, node.get("password").asText());
+		
+		
+		
+		//Redirect user
+		
+		
 		User.create(user);
 		return redirect(routes.Users.index());
 	}

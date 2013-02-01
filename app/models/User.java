@@ -2,6 +2,8 @@ package models;
 
 import java.util.List;
 
+import net.vz.mongodb.jackson.DBCursor;
+import net.vz.mongodb.jackson.DBQuery;
 import net.vz.mongodb.jackson.DBUpdate;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
@@ -50,14 +52,17 @@ public class User {
 	    return userColl().find().toArray();
 	}
 	
-	public static User findOneById(String id){
-		return userColl().findOneById(id);
-	}
-
 	public static User findOne(){
 		return userColl().findOne();
 	}
 
+	public static User findOneById(String id){
+		return userColl().findOneById(id);
+	}
+
+	public static User findByUserName(String userNameEmail){
+		return userColl().find(DBQuery.is("userNameEmail", userNameEmail)).toArray().get(0);
+	}
 	
 	public static User create(User user) {
 	    return userColl().save(user).getSavedObject();

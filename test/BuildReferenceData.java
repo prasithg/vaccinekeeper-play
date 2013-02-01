@@ -224,5 +224,20 @@ public class BuildReferenceData {
 		});
 	}
 
+	@Test
+	public void testUserNameSearch(){
+		running(fakeApplication(), new Runnable(){
+
+			@Override
+			public void run() {
+				
+				User user = User.findByUserName("michael@vaccinekeeper.com");
+				assertThat(user).isNotNull();
+
+			}
+		});
+	}
+
+	
 
 }
