@@ -15,6 +15,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.mongodb.MongoException;
+
 import play.data.validation.Constraints.EmailValidator;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -54,14 +56,36 @@ public class Users extends Controller {
 	
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result updateSchedule(){
-		JsonNode json = request().body().asJson();
 		
+		//Capture the request and parse
+		JsonNode json = request().body().asJson();
 		String childId = json.findPath("childId").getTextValue();
 		if(childId==null || childId.isEmpty()) return Results.notFound("Missing childId");
 
-		JsonNode schedule = json.get("schedule");
-		if(schedule==null) return Results.notFound("Missing schedule");
+		JsonNode s = json.get("schedule");
+		if(s==null) return Results.notFound("Missing schedule");
 
+		ObjectMapper mapper = new ObjectMapper();
+		Schedule schedule = null;
+		try {
+			schedule = mapper.readValue(s, Schedule.class);
+		} catch (IOException e) {
+			return Results.notFound("schedule has wrong format");
+		}
+		
+		//Get the child
+		Child child = null;
+		try{
+			child = Child.findOneById(childId);			
+		} catch (IllegalArgumentException e) {
+			return Results.notFound("The child id "+childId+" is not valid");
+		}
+		
+		//TODO Sort through the child's schedule list and match with this schedule then update
+
+		System.out.println("****");
+		System.out.println(schedule.endDate);
+		
 		return redirect(routes.Users.getChild(childId));
 	}
 	

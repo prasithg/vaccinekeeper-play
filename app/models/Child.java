@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mongodb.MongoException;
+
 import net.vz.mongodb.jackson.DBCursor;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
@@ -65,7 +67,7 @@ public class Child {
 		return list;
 	}	
 
-	public static Child findOneById(String id){
+	public static Child findOneById(String id) throws IllegalArgumentException {
 		return childColl().findOneById(id);
 	}
 
