@@ -233,6 +233,9 @@ public class BuildReferenceData {
 				
 				User user = User.findByUserName("michael@vaccinekeeper.com");
 				assertThat(user).isNotNull();
+				
+				user = User.findByUserName("dude madness");
+				assertThat(user).isNull();
 
 			}
 		});

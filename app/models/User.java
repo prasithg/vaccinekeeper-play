@@ -61,7 +61,9 @@ public class User {
 	}
 
 	public static User findByUserName(String userNameEmail){
-		return userColl().find(DBQuery.is("userNameEmail", userNameEmail)).toArray().get(0);
+		DBCursor<User>  cursor = userColl().find(DBQuery.is("userNameEmail", userNameEmail));
+		if(!cursor.hasNext()) return null;
+		return cursor.next();
 	}
 	
 	public static User create(User user) {
