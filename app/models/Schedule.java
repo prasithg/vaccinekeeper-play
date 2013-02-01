@@ -1,11 +1,14 @@
 package models;
 
+import java.util.Date;
+
 public class Schedule {
 
 	public String shortName;
 	public int shot;
 	public long startDate, endDate;
 	public long scheduledDate;
+	public long lastModified;
 	public boolean cancelled, complete = false;
 	public String comment;
 	private final static long msInMonth = 86400000*30;
@@ -14,7 +17,8 @@ public class Schedule {
 		this.shortName = vaccine.shortName;
 		this.shot = shot;
 		this.startDate = calcStart(vaccine, dob, shot);
-		this.endDate = calcEnd(vaccine, dob, shot);		
+		this.endDate = calcEnd(vaccine, dob, shot);
+		this.lastModified = new Date().getTime();
 	}
 
 	public Schedule(){
