@@ -107,7 +107,7 @@ public class ControllerTests {
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
 
-				assertThat(status(result)).isEqualTo(Status.BAD_REQUEST);
+				assertThat(status(result)).isEqualTo(Status.NOT_FOUND);
 
 				
 			}

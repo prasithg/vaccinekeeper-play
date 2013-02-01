@@ -1,23 +1,17 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
-
-import javax.validation.Constraint;
-
-import com.mongodb.MongoException;
 
 import net.vz.mongodb.jackson.DBCursor;
 import net.vz.mongodb.jackson.DBQuery;
 import net.vz.mongodb.jackson.DBUpdate;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
-import net.vz.mongodb.jackson.WriteResult;
-import play.data.format.Formats;
-import play.data.validation.Constraints;
-import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.EmailValidator;
-import play.data.validation.Constraints.Required;
 import play.modules.mongodb.jackson.MongoDB;
+
+import com.mongodb.MongoException;
 //import org.bson.types.ObjectId;
 
 public class User {
@@ -30,6 +24,8 @@ public class User {
 	public String password;
 	
 	public String firstName, lastName;
+	
+	public long createdDate;
 	
    	public List<String> childIds;
    	
@@ -91,7 +87,8 @@ public class User {
 		return cursor.next();
 	}
 	
-	public static User create(User user) throws MongoException{
+	public static User create(User user) {
+		user.createdDate = new Date().getTime();
 	    return userColl().save(user).getSavedObject();
 	}
 	
@@ -109,4 +106,5 @@ public class User {
 	    userColl().drop();
 	}
 
+	
 }
