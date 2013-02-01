@@ -95,8 +95,6 @@ public class ControllerTests {
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
 
-				//At the moment, we're redirecting, so the content is empty
-				assertThat(contentAsString(result)).isEmpty();
 				assertThat(status(result)).isEqualTo(Status.SEE_OTHER);
 
 				node = play.libs.Json.parse("{	\"userNameEmail\":\"steve@apple.com\"," +
@@ -113,6 +111,24 @@ public class ControllerTests {
 		});
 	}
 	
+	@Test
+	public void callUpdateSchedule(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				JsonNode node = play.libs.Json.parse("{}");
+				
+				Result result = routeAndCall(fakeRequest(POST, "/schedule")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(node));
+
+				assertThat(status(result)).isEqualTo(Status.NOT_IMPLEMENTED);
+
+
+				
+			}
+		});
+	}
 	
 
 	

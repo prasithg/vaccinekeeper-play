@@ -3,16 +3,15 @@ package controllers;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import org.codehaus.jackson.JsonNode;
 
 import models.Child;
 import models.Family;
+import models.Schedule;
 import models.User;
-import models.Vaccine;
+
+import org.codehaus.jackson.JsonNode;
+
 import play.mvc.Controller;
-import play.mvc.Http.RequestBody;
 import play.mvc.Result;
 
 public class Users extends Controller {
@@ -36,6 +35,10 @@ public class Users extends Controller {
 	
 	public static Result getChild(String childId){
 		return ok(play.libs.Json.toJson(Child.findOneById(childId)));
+	}
+	
+	public static Result updateSchedule(){
+		return TODO;
 	}
 	
 	private static List<Family> getFamilies(){
