@@ -52,7 +52,13 @@ public class Users extends Controller {
 	}
 	
 	public static Result getChild(String childId){
-		return ok(play.libs.Json.toJson(Child.findOneById(childId)));
+		Child child = null;
+		try{
+			child = Child.findOneById(childId);
+		} catch (IllegalArgumentException e) {
+			return Results.notFound("Child id does not exist");
+		}
+		return ok(play.libs.Json.toJson(child));
 	}
 	
 	@BodyParser.Of(BodyParser.Json.class)
