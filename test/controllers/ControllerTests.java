@@ -1,3 +1,4 @@
+package controllers;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.*;
 import static play.test.Helpers.*;
@@ -126,7 +127,7 @@ public class ControllerTests {
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
 
-				assertThat(status(result)).isEqualTo(Status.NOT_IMPLEMENTED);
+				assertThat(status(result)).isEqualTo(Status.NOT_FOUND);
 
 
 				

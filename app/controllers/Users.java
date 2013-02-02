@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,11 +82,24 @@ public class Users extends Controller {
 			return Results.notFound("The child id "+childId+" is not valid");
 		}
 		
-		//TODO Sort through the child's schedule list and match with this schedule then update
-
-		System.out.println("****");
-		System.out.println(schedule.endDate);
+		//Sort through the schedule list
+		Iterator<Schedule> list = child.schedule.iterator();
+		while(list.hasNext()){
+			Schedule sched = list.next();
+			if(sched.shortName.equals(schedule.shortName) & sched.shot == schedule.shot){
+				if(schedule.lastModified > sched.lastModified){
+					sched.cancelled = schedule.cancelled;
+					sched.complete = schedule.complete;
+					sched.comment = schedule.comment;
+					sched.lastModified = schedule.lastModified;
+					sched.scheduledDate = schedule.scheduledDate;
+				}
+			break;
+			}
+		}
 		
+		//Persist and send result
+		Child.update(child);
 		return redirect(routes.Users.getChild(childId));
 	}
 	

@@ -1,10 +1,9 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.mongodb.MongoException;
 
 import net.vz.mongodb.jackson.DBCursor;
 import net.vz.mongodb.jackson.JacksonDBCollection;
@@ -44,6 +43,19 @@ public class Child {
 		this.schedule = createSchedule(dob);
 		this.sex = sex;
 	}
+	
+	/**
+	 * A validation method
+	 * Use it after creating a child object with your new data
+	 * @return Description of the error if there's a problem, null if no error
+	 */
+	public String validate(){
+    	if(firstName.isEmpty()) return "name field is empty";
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(2013-6, 1, 1);
+    	if(dob<cal.getTimeInMillis()) return "child is too old";
+    	return null;
+	}
 
 	private static JacksonDBCollection<Child, String> childColl() {
 		return MongoDB.getCollection("Children", Child.class, String.class);
@@ -82,6 +94,11 @@ public class Child {
 	public static Child create(Child child) {
 	    return childColl().save(child).getSavedObject();
 	}
+	
+	public static Child update(Child child){
+		return childColl().save(child).getSavedObject();
+	}
+
 
 	public static void drop() {
 	    childColl().drop();
