@@ -79,8 +79,14 @@ public class Child {
 		return list;
 	}	
 
-	public static Child findOneById(String id) throws IllegalArgumentException {
-		return childColl().findOneById(id);
+	public static Child findOneById(String id) {
+		Child child = null;
+		try{
+			child = childColl().findOneById(id);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+		return child;
 	}
 
 	public static Child findOne(){
@@ -99,6 +105,16 @@ public class Child {
 		return childColl().save(child).getSavedObject();
 	}
 
+	public static void delete(String id) {
+	    Child child = null;
+	    try{
+		    child = childColl().findOneById(id);	    	
+	    } catch (IllegalArgumentException e) {
+	    	System.out.println("User.delete() could not find user +"+id);
+	    	return;
+	    }
+	    childColl().remove(child);
+	}
 
 	public static void drop() {
 	    childColl().drop();

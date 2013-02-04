@@ -13,6 +13,9 @@ GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 GET		/users						controllers.Users.index()
 
 POST	/register					controllers.Users.registerUser()
+POST	/delete						controllers.Users.deleteUser()
+
+
 POST	/schedule					controllers.Users.updateSchedule()
 
 #POST    /projects/:project/tasks	controllers.Tasks.add(project: Long, folder: String)

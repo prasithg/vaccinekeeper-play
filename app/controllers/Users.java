@@ -32,12 +32,8 @@ public class Users extends Controller {
 	}
 
 	public static Result getChild(String childId){
-		Child child = null;
-		try{
-			child = Child.findOneById(childId);			
-		} catch (IllegalArgumentException  e) {
-			return Results.notFound("The child id "+childId+" is not valid");
-		}
+		Child child = Child.findOneById(childId);
+		if (child == null ) return Results.notFound("The child id "+childId+" is not valid");
 		return ok(play.libs.Json.toJson(child));			
 	}
 
@@ -61,6 +57,26 @@ public class Users extends Controller {
 	}
 	
 	@BodyParser.Of(BodyParser.Json.class)
+	public static Result deleteUser(){
+		JsonNode json = request().body().asJson();
+		
+		String userName = json.findPath("userNameEmail").getTextValue();
+		if(userName==null) return Results.notFound("Missing userNameEmail");
+		
+		String password = json.findPath("password").getTextValue();
+		if(password==null) return Results.notFound("Missing password");
+
+		User user = User.findByUserName(userName);
+		if(user==null) return Results.notFound("User "+userName+" not found");
+		
+		User.delete(user._id);
+		return redirect(routes.Users.index());
+	}
+
+	
+	
+	
+	@BodyParser.Of(BodyParser.Json.class)
 	public static Result updateSchedule(){
 		
 		//Capture the request and parse
@@ -80,12 +96,8 @@ public class Users extends Controller {
 		}
 		
 		//Get the child
-		Child child = null;
-		try{
-			child = Child.findOneById(childId);			
-		} catch (IllegalArgumentException e) {
-			return Results.notFound("The child id "+childId+" is not valid");
-		}
+		Child child = Child.findOneById(childId);
+		if(child==null) return Results.notFound("The child id "+childId+" is not valid");
 		
 		//Sort through the schedule list
 		Iterator<Schedule> list = child.schedule.iterator();
@@ -118,7 +130,8 @@ public class Users extends Controller {
 			Iterator<String> childIds = new LinkedList<String>().iterator();
 			if(user.childIds != null) childIds = user.childIds.iterator();
 			while(childIds.hasNext()){
-				children.add(Child.findOneById(childIds.next()));
+				Child child = Child.findOneById(childIds.next());
+				if (child!=null) children.add(child);
 			}
 			Family family = new Family(user, children);
 			families.add(family);

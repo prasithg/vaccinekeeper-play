@@ -40,7 +40,8 @@ public class ControllerTests {
 				
 				Iterator<String> childIds = user.childIds.iterator();
 				while(childIds.hasNext()){
-					children.add(Child.findOneById(childIds.next()));
+					Child child = Child.findOneById(childIds.next());
+					if(child!=null) children.add(child);
 				}
 				Family family = new Family(user, children);
 				families.add(family);
@@ -84,15 +85,16 @@ public class ControllerTests {
 		});
 	}
 
-	//Test post
-//	@Test
+	//Test register user routing
+	@Test
 	public void callRegisterUser(){
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
 				
-				//This test is inconsistent because it depends on the order that the tests are run in
-				//Need a delete user to clear out bill.gates if he exists
+				User user = User.findByUserName("bill.gates@microsoft.com");
+				if(user!= null) User.delete(user._id);
+				
 				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\"bill.gates@microsoft.com\"," +
 						"								\"password\":\"password\"}");
 				
@@ -112,6 +114,29 @@ public class ControllerTests {
 				assertThat(status(result)).isEqualTo(Status.NOT_FOUND);
 
 				
+			}
+		});
+	}
+	
+	@Test
+	public void callDeleteUser(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				
+				User user = User.findByUserName("prasith@vaccinekeeper.com");
+				String childId = user.childIds.iterator().next();
+				
+				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\""+user.userNameEmail+"\"," +
+						"								\"password\":\""+user.password+"\"}");
+				
+				Result result = routeAndCall(fakeRequest(POST, "/delete")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(node));
+
+				assertThat(User.findByUserName("prasith@vaccinekeeper.com")).isNull();
+				assertThat(Child.findOneById(childId)).isNull();
+
 			}
 		});
 	}

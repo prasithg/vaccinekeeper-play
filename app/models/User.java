@@ -1,17 +1,20 @@
 package models;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+
+import com.mongodb.MongoException;
 
 import net.vz.mongodb.jackson.DBCursor;
 import net.vz.mongodb.jackson.DBQuery;
 import net.vz.mongodb.jackson.DBUpdate;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
+import net.vz.mongodb.jackson.WriteResult;
 import play.data.validation.Constraints.EmailValidator;
 import play.modules.mongodb.jackson.MongoDB;
-
-import com.mongodb.MongoException;
 //import org.bson.types.ObjectId;
 
 public class User {
@@ -96,10 +99,23 @@ public class User {
 		return userColl().save(user).getSavedId();
 	}
 	
+	//TODO need something here to confirm that the deletion happened
 	public static void delete(String id) {
-	    User task = userColl().findOneById(id);
-	    if (task != null)
-	        userColl().remove(task);
+	    User user = null;
+	    try{
+		    user = userColl().findOneById(id);	    	
+	    } catch (IllegalArgumentException e) {
+	    	System.out.println("User.delete() could not find user +"+id);
+	    	return;
+	    }
+	    
+	    Iterator<String> children = new LinkedList<String>().iterator();
+	    if(user.childIds!=null)
+	    	children = user.childIds.iterator();
+	    while (children.hasNext()){
+	    	Child.delete(children.next());
+	    }
+	    userColl().remove(user);
 	}
 	
 	public static void drop() {
