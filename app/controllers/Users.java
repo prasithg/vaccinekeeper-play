@@ -31,12 +31,12 @@ public class Users extends Controller {
 		return ok(views.html.index.render(getFamilies()));
 	}
 
-	public static Result getChild(String childId){
+/*	public static Result getChild(String childId){
 		Child child = Child.findOneById(childId);
 		if (child == null ) return Results.notFound("The child id "+childId+" is not valid");
 		return ok(play.libs.Json.toJson(child));			
 	}
-
+*/
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result registerUser(){
 		JsonNode json = request().body().asJson();
@@ -102,7 +102,7 @@ public class Users extends Controller {
 
 	
 	
-	@BodyParser.Of(BodyParser.Json.class)
+/*	@BodyParser.Of(BodyParser.Json.class)
 	public static Result updateSchedule(){
 		
 		//Capture the request and parse
@@ -143,9 +143,9 @@ public class Users extends Controller {
 		
 		//Persist and send result
 		Child.update(child);
-		return redirect(routes.Users.getChild(childId));
+		return redirect(routes.Children.getChild(childId));
 	}
-	
+*/	
 	private static List<Family> getFamilies(){
 		Iterator<User> users = User.all().iterator();
 		List<Family> families = new LinkedList<Family>();

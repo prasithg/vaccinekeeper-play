@@ -82,7 +82,7 @@ public class ControllerTests {
 			@Override
 			public void run() {
 				Child child = Child.findOne();
-				Result result = callAction(controllers.routes.ref.Users.getChild(child._id));
+				Result result = callAction(controllers.routes.ref.Children.getChild(child._id));
 				assertThat(play.libs.Json.parse(contentAsString(result)).get("firstName").asText()).isEqualTo(child.firstName);
 				
 			}

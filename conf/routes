@@ -5,26 +5,25 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-# Vaccine controller
+# Vaccines
 GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 
 
-# Users controller
+# Users
 GET		/users						controllers.Users.index()
 
 POST	/register					controllers.Users.registerUser()
+
 #Tried using the delete method but routeAndCall(fakeRequest(DELETE, "/delete") in callDeleteUser() does not delete
-#FYI PUT doesn't seem to work either
+#FYI PUT doesn't seem to work either... could be something to do with JSON
 POST	/delete						controllers.Users.deleteUser()
 POST	/update						controllers.Users.updateUser()
 
 
-POST	/schedule					controllers.Users.updateSchedule()
-
-
+# Children
 #POST    /projects/:project/tasks	controllers.Tasks.add(project: Long, folder: String)
-
-GET		/child/:id					controllers.Users.getChild(id: String)
+POST	/schedule					controllers.Children.updateSchedule()
+GET		/child/:id					controllers.Children.getChild(id: String)
 
 
 
