@@ -31,6 +31,15 @@ public class Users extends Controller {
 		return ok(views.html.index.render(getFamilies()));
 	}
 
+	public static Result getChild(String childId){
+		Child child = null;
+		try{
+			child = Child.findOneById(childId);			
+		} catch (IllegalArgumentException  e) {
+			return Results.notFound("The child id "+childId+" is not valid");
+		}
+		return ok(play.libs.Json.toJson(child));			
+	}
 
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result registerUser(){
@@ -49,16 +58,6 @@ public class Users extends Controller {
 		
 		User.create(user);
 		return redirect(routes.Users.index());
-	}
-	
-	public static Result getChild(String childId){
-		Child child = null;
-		try{
-			child = Child.findOneById(childId);			
-		} catch (IllegalArgumentException  e) {
-			return Results.notFound("The child id "+childId+" is not valid");
-		}
-		return ok(play.libs.Json.toJson(child));			
 	}
 	
 	@BodyParser.Of(BodyParser.Json.class)
