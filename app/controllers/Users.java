@@ -73,7 +73,33 @@ public class Users extends Controller {
 		return redirect(routes.Users.index());
 	}
 
-	
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result updateUser(){
+		JsonNode json = request().body().asJson();
+		
+		String id = json.findPath("_id").getTextValue();
+		if(id==null) return Results.notFound("Missing id");
+		
+		String password = json.findPath("password").getTextValue();
+		if(password==null) return Results.notFound("Missing password");
+
+		User user = User.findOneById(id);
+		if(user==null) return Results.notFound("User does not exist");
+		if(!password.equals(user.password)) return Results.badRequest("Wrong password");
+		
+		user.userNameEmail=json.findPath("userNameEmail").getTextValue();
+		user.firstName=json.findPath("firstName").getTextValue();
+		user.lastName=json.findPath("lastName").getTextValue();
+		
+		String newPass = json.findPath("newPass").getTextValue();
+		if(newPass!=null){
+			if(!newPass.isEmpty()) user.password = newPass;
+		}
+		
+		User.update(user);
+		return redirect(routes.Users.index());
+	}
+
 	
 	
 	@BodyParser.Of(BodyParser.Json.class)

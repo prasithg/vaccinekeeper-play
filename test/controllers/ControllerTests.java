@@ -159,6 +159,31 @@ public class ControllerTests {
 		});
 	}
 	
+	@Test
+	public void callUpdateUser(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				
+				User user = User.findOne();
+				String newUserNameEmail = "newEmail@gmail.com";
+
+				JsonNode node = play.libs.Json.parse(	"{\"_id\":\""+user._id+"\",\"password\":\""+user.password+"\"," +
+														"\"userNameEmail\":\""+newUserNameEmail+"\"}");				
+				System.out.println(node.toString());
+				routeAndCall(fakeRequest(POST, "/update")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(node));
+				
+				user = User.findByUserName(newUserNameEmail);
+				assertThat(user).isNotNull();
+
+			}
+		});
+	}
+
+	
+	
 	//Would be good to simply callAction on the controller but I'm not sure how to pass in variables with the current setup
 	@Test
 	public void callUpdateSchedule(){
@@ -187,6 +212,6 @@ public class ControllerTests {
 	}
 	
 
-	
+
 
 }

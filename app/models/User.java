@@ -99,7 +99,7 @@ public class User {
 		return userColl().save(user).getSavedId();
 	}
 	
-	//TODO need something here to confirm that the deletion happened
+//	TODO need something here to confirm that the deletion happened
 	public static void delete(String id) {
 	    User user = null;
 	    try{

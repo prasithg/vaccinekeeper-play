@@ -232,7 +232,7 @@ public class BuildReferenceData {
 			@Override
 			public void run() {
 				
-				User user = User.findByUserName("michael@vaccinekeeper.com");
+				User user = User.findByUserName("prasith@vaccinekeeper.com");
 				assertThat(user).isNotNull();
 				
 				user = User.findByUserName("dude madness");
