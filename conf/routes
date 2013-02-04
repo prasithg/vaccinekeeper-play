@@ -13,6 +13,8 @@ GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 GET		/users						controllers.Users.index()
 
 POST	/register					controllers.Users.registerUser()
+
+#Tried using the delete method but routeAndCall(fakeRequest(DELETE, "/delete") in callDeleteUser() does not delete
 POST	/delete						controllers.Users.deleteUser()
 
 

@@ -2,13 +2,17 @@ package controllers;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.*;
 import static play.test.Helpers.*;
+import org.apache.commons.lang.RandomStringUtils;
 
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import models.Child;
 import models.Family;
+import models.Schedule;
 import models.User;
 
 import org.codehaus.jackson.JsonNode;
@@ -125,38 +129,59 @@ public class ControllerTests {
 			public void run() {
 				
 				User user = User.findByUserName("prasith@vaccinekeeper.com");
-				String childId = user.childIds.iterator().next();
 				
+				if(user==null){
+					User pGovin = new User("prasith@vaccinekeeper.com", "password");
+					pGovin = User.create(pGovin);
+					
+					Calendar dob = Calendar.getInstance();
+					dob.set(2009, 8, 25);
+					Child samina = new Child("Samina", dob.getTimeInMillis(), Child.Sex.FEMALE);
+					samina = Child.create(samina);
+					
+					User.addChild(pGovin._id, samina._id);
+				}
+				
+				String childId = user.childIds.iterator().next();			
 				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\""+user.userNameEmail+"\"," +
 						"								\"password\":\""+user.password+"\"}");
 				
-				Result result = routeAndCall(fakeRequest(POST, "/delete")
+				routeAndCall(fakeRequest(POST, "/delete")
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
 
-				assertThat(User.findByUserName("prasith@vaccinekeeper.com")).isNull();
+				user = User.findByUserName("prasith@vaccinekeeper.com");
+				
+				assertThat(user).isNull();
 				assertThat(Child.findOneById(childId)).isNull();
 
 			}
 		});
 	}
 	
-	//Test schedule
+	//Would be good to simply callAction on the controller but I'm not sure how to pass in variables with the current setup
 	@Test
 	public void callUpdateSchedule(){
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
-				JsonNode node = play.libs.Json.parse("{}");
+				Child child = Child.findOne();
 				
-				Result result = routeAndCall(fakeRequest(POST, "/schedule")
+				int index = 5;
+				String rString = RandomStringUtils.randomAlphabetic(5);
+				long lastMod = child.schedule.get(index).lastModified+10;
+
+				JsonNode node = play.libs.Json.parse(	"{	\"childId\":\""+child._id+"\"," +
+														"\"schedule\":{\"shortName\":\"RV\", \"shot\":3, " +
+														"\"cancelled\":\"false\",\"complete\":\"true\", \"comment\":\""+rString+"\"," +
+														"\"lastModified\": "+lastMod+",\"scheduledDate\":1000}}");				
+				routeAndCall(fakeRequest(POST, "/schedule")
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
 
-				assertThat(status(result)).isEqualTo(Status.NOT_FOUND);
-
-
+				child = Child.findOneById(child._id);
 				
+				assertThat(child.schedule.get(index).comment).isEqualTo(rString);
 			}
 		});
 	}
