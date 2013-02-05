@@ -20,7 +20,7 @@ public class Child {
 	public String firstName;
 	
 	@Required
-	public long dob;
+	public Long dob;
 	
 	public enum Sex {MALE, FEMALE}
 	
@@ -49,11 +49,8 @@ public class Child {
 	 * Use it after creating a child object with your new data
 	 * @return Description of the error if there's a problem, null if no error
 	 */
-	public String validate(){
-    	if(firstName.isEmpty()) return "name field is empty";
-    	Calendar cal = Calendar.getInstance();
-    	cal.set(2013-6, 1, 1);
-    	if(dob<cal.getTimeInMillis()) return "child is too old";
+	public String validateNew(){
+    	if(firstName==null | dob==null | sex==null) return "Child is missing initialization parameters";
     	return null;
 	}
 
