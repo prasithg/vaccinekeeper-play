@@ -131,15 +131,17 @@ public class ControllerTests {
 				User user = User.findByUserName("prasith@vaccinekeeper.com");
 				
 				if(user==null){
-					User pGovin = new User("prasith@vaccinekeeper.com", "password");
-					pGovin = User.create(pGovin);
-					
+					user = new User("prasith@vaccinekeeper.com", "password");
+					user = User.create(user);					
+				}
+				
+				if(user.childIds==null){
 					Calendar dob = Calendar.getInstance();
 					dob.set(2009, 8, 25);
-					Child samina = new Child("Samina", dob.getTimeInMillis(), Child.Sex.FEMALE);
-					samina = Child.create(samina);
+					Child child = Child.create(new Child("Samina", dob.getTimeInMillis(), Child.Sex.FEMALE));
 					
-					User.addChild(pGovin._id, samina._id);
+					User.addChild(user._id, child._id);
+					user = User.findOneById(user._id);
 				}
 				
 				String childId = user.childIds.iterator().next();			

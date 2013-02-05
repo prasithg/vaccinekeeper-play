@@ -65,7 +65,7 @@ public class User {
 	}
 
 	public static void addChild(String userId, String childId){
-		userColl().updateById(userId, DBUpdate.push("childIds", childId));		
+		userColl().updateById(userId, DBUpdate.push("childIds", childId));
 	}
 	
 	public static boolean isEmpty(){

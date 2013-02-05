@@ -34,19 +34,24 @@ public class Children extends Controller {
 		return ok(play.libs.Json.toJson(child));			
 	}
 
-	@BodyParser.Of(BodyParser.Json.class)
+/*	@BodyParser.Of(BodyParser.Json.class)
 	public static Result addChild(){
 		//userId, password, { firstName, dob,  sex }
 		//Capture the request and parse
 		JsonNode json = request().body().asJson();
 		
-//		Validate
-		String userName = json.findPath("_id").getTextValue();
-		if(userName==null) return Results.notFound("Missing userNameEmail");
+//		Validate user
+		String id = json.findPath("_id").getTextValue();
+		if(id==null) return Results.notFound("Missing userNameEmail");
 		
 		String password = json.findPath("password").getTextValue();
 		if(password==null) return Results.notFound("Missing password");
 
+		User user = User.findOneById(id);
+		if(user==null) return Results.notFound("User does not exist");
+		if(!password.equals(user.password)) return Results.badRequest("Wrong password");
+
+//		Validate child
 		String name = json.findPath("firstName").getTextValue();
 		if(name==null) return Results.notFound("Missing child's name");
 		
@@ -65,9 +70,57 @@ public class Children extends Controller {
 		String validation = child.validate();
 		if(validation!= null) return Results.badRequest(validation);
 
-		//Persist and send result
+//		Persist and send result
 		child = Child.create(child);
-		return redirect(routes.Children.getChild(child._id));
+//		User.addChild(user._id, child._id);
+//		
+		return redirect(routes.Children.getChild(child._id));		
+	}
+*/
+	
+	
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result addChild(){
+		JsonNode json = request().body().asJson();
+		
+//		Validate user
+		String id = json.findPath("_id").getTextValue();
+		if(id==null) return Results.notFound("Missing userNameEmail");
+		
+		String password = json.findPath("password").getTextValue();
+		if(password==null) return Results.notFound("Missing password");
+
+		User user = User.findOneById(id);
+		if(user==null) return Results.notFound("User does not exist");
+		if(!password.equals(user.password)) return Results.badRequest("Wrong password");
+
+//		Validate child
+		String name = json.findPath("firstName").getTextValue();
+		if(name==null) return Results.notFound("Missing child's name");
+		
+		long dob = json.findPath("dob").getLongValue();
+		if(dob==0) return Results.notFound("Missing date of birth");
+		
+//		Had this catch (NullPointerException | IllegalArgumentException f ) but was giving me errors
+		Sex sex = null;
+		try {
+			sex = Sex.valueOf(json.findPath("sex").getTextValue());			
+		} catch (NullPointerException e) {
+			return Results.notFound("Missing sex field");
+		} catch (IllegalArgumentException f) {
+			return Results.notFound("Incorrect sex");
+		}
+		
+//		Create child and validate some more
+		Child child = new Child(name, dob, sex);
+		String validation = child.validate();
+		if(validation!= null) return Results.badRequest(validation);
+
+//		Persist and send result
+		child = Child.create(child);
+		User.addChild(user._id, child._id);
+		
+		return redirect(routes.Children.getChild(child._id));		
 	}
 
 	
