@@ -3,6 +3,9 @@ package controllers;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.persistence.MapKey;
+import javax.persistence.MappedSuperclass;
+
 import models.Child;
 import models.Child.Sex;
 import models.Schedule;
@@ -46,7 +49,7 @@ public class Children extends Controller {
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result addChild(String _id) {
 		
-//		Assume user is logged in - don't need to find or validate passwords
+//		Assume user is logged in - don't need to find user or validate passwords
 		
 //		Map child object
 		ObjectMapper mapper = new ObjectMapper();
