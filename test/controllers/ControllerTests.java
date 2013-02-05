@@ -170,7 +170,7 @@ public class ControllerTests {
 
 				JsonNode node = play.libs.Json.parse(	"{\"_id\":\""+user._id+"\",\"password\":\""+user.password+"\"," +
 														"\"userNameEmail\":\""+newUserNameEmail+"\"}");				
-				System.out.println(node.toString());
+
 				routeAndCall(fakeRequest(POST, "/update")
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
@@ -196,10 +196,11 @@ public class ControllerTests {
 				String rString = RandomStringUtils.randomAlphabetic(5);
 				long lastMod = child.schedule.get(index).lastModified+10;
 
-				JsonNode node = play.libs.Json.parse(	"{	\"childId\":\""+child._id+"\"," +
+				JsonNode node = play.libs.Json.parse(	"{	\"_id\":\""+child._id+"\"," +
 														"\"schedule\":{\"shortName\":\"RV\", \"shot\":3, " +
 														"\"cancelled\":\"false\",\"complete\":\"true\", \"comment\":\""+rString+"\"," +
 														"\"lastModified\": "+lastMod+",\"scheduledDate\":1000}}");				
+
 				routeAndCall(fakeRequest(POST, "/schedule")
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));

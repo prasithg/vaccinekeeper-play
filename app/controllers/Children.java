@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import models.Child;
+import models.Child.Sex;
 import models.Family;
 import models.Schedule;
 import models.User;
@@ -33,6 +34,42 @@ public class Children extends Controller {
 		return ok(play.libs.Json.toJson(child));			
 	}
 
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result addChild(){
+		//userId, password, { firstName, dob,  sex }
+		//Capture the request and parse
+		JsonNode json = request().body().asJson();
+		
+//		Validate
+		String userName = json.findPath("_id").getTextValue();
+		if(userName==null) return Results.notFound("Missing userNameEmail");
+		
+		String password = json.findPath("password").getTextValue();
+		if(password==null) return Results.notFound("Missing password");
+
+		String name = json.findPath("firstName").getTextValue();
+		if(name==null) return Results.notFound("Missing child's name");
+		
+		long dob = json.findPath("dob").getLongValue();
+		if(dob==0) return Results.notFound("Missing date of birth");
+		
+		Sex sex = null;
+		try{
+			sex = Sex.valueOf(json.findPath("sex").getTextValue());
+		} catch (NullPointerException | IllegalArgumentException f ){
+			return Results.notFound("Missing sex");
+		}
+		
+//		Create child and validate some more
+		Child child = new Child(name, dob, sex);
+		String validation = child.validate();
+		if(validation!= null) return Results.badRequest(validation);
+
+		//Persist and send result
+		child = Child.create(child);
+		return redirect(routes.Children.getChild(child._id));
+	}
+
 	
 	
 	@BodyParser.Of(BodyParser.Json.class)
@@ -40,7 +77,7 @@ public class Children extends Controller {
 		
 		//Capture the request and parse
 		JsonNode json = request().body().asJson();
-		String childId = json.findPath("childId").getTextValue();
+		String childId = json.findPath("_id").getTextValue();
 		if(childId==null || childId.isEmpty()) return Results.notFound("Missing childId");
 
 		JsonNode s = json.get("schedule");

@@ -102,50 +102,6 @@ public class Users extends Controller {
 
 	
 	
-/*	@BodyParser.Of(BodyParser.Json.class)
-	public static Result updateSchedule(){
-		
-		//Capture the request and parse
-		JsonNode json = request().body().asJson();
-		String childId = json.findPath("childId").getTextValue();
-		if(childId==null || childId.isEmpty()) return Results.notFound("Missing childId");
-
-		JsonNode s = json.get("schedule");
-		if(s==null) return Results.notFound("Missing schedule");
-
-		ObjectMapper mapper = new ObjectMapper();
-		Schedule schedule = null;
-		try {
-			schedule = mapper.readValue(s, Schedule.class);
-		} catch (IOException e) {
-			return Results.notFound("schedule has wrong format");
-		}
-		
-		//Get the child
-		Child child = Child.findOneById(childId);
-		if(child==null) return Results.notFound("The child id "+childId+" is not valid");
-		
-		//Sort through the schedule list
-		Iterator<Schedule> list = child.schedule.iterator();
-		while(list.hasNext()){
-			Schedule sched = list.next();
-			if(sched.shortName.equals(schedule.shortName) & sched.shot == schedule.shot){
-				if(schedule.lastModified > sched.lastModified){
-					sched.cancelled = schedule.cancelled;
-					sched.complete = schedule.complete;
-					sched.comment = schedule.comment;
-					sched.lastModified = schedule.lastModified;
-					sched.scheduledDate = schedule.scheduledDate;
-				}
-			break;
-			}
-		}
-		
-		//Persist and send result
-		Child.update(child);
-		return redirect(routes.Children.getChild(childId));
-	}
-*/	
 	private static List<Family> getFamilies(){
 		Iterator<User> users = User.all().iterator();
 		List<Family> families = new LinkedList<Family>();

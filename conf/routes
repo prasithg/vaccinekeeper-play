@@ -10,22 +10,19 @@ GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 
 
 # Users
-GET		/users						controllers.Users.index()
-
-POST	/register					controllers.Users.registerUser()
-
 #Tried using the delete method but routeAndCall(fakeRequest(DELETE, "/delete") in callDeleteUser() does not delete
 #FYI PUT doesn't seem to work either... could be something to do with JSON
+
+GET		/users						controllers.Users.index()
+POST	/register					controllers.Users.registerUser()
 POST	/delete						controllers.Users.deleteUser()
 POST	/update						controllers.Users.updateUser()
-
 
 # Children
 #POST    /projects/:project/tasks	controllers.Tasks.add(project: Long, folder: String)
 POST	/schedule					controllers.Children.updateSchedule()
 GET		/child/:id					controllers.Children.getChild(id: String)
-
-
+POST	/child						controllers.Children.addChild()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
