@@ -19,30 +19,6 @@ import play.mvc.Results;
 
 public class Children extends Controller {
 
-	public static Result getChild(String childId){
-		Child child = Child.findOneById(childId);
-		if (child == null ) return Results.notFound("The child id "+childId+" is not valid");
-		return ok(play.libs.Json.toJson(child));			
-	}
-
-	@BodyParser.Of(BodyParser.Json.class)
-	public static Result test(){
-		ObjectMapper mapper = new ObjectMapper();
-				
-		Schedule schedule = null;
-		try {
-			schedule = mapper.readValue(request().body().asJson(), Schedule.class);
-		} catch (IOException e) {
-			return Results.notFound("json is not of format Schedule");
-		}
-		
-		String validate = schedule.validate();
-		if(validate!= null) return Results.badRequest(validate);
-				
-		
-		return ok(play.libs.Json.toJson(schedule));
-	}
-	
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result addChild(String _id) {
 		
@@ -69,6 +45,12 @@ public class Children extends Controller {
 		return redirect(routes.Children.getChild(child._id));		
 	}
 	
+	public static Result getChild(String childId){
+		Child child = Child.findOneById(childId);
+		if (child == null ) return Results.notFound("The child id "+childId+" is not valid");
+		return ok(play.libs.Json.toJson(child));			
+	}
+
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result editChild() {
 		
@@ -122,12 +104,6 @@ public class Children extends Controller {
 		return redirect(routes.Users.index());
 	}
 
-
-	
-
-	
-	
-	
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result updateSchedule(){
 		
