@@ -68,10 +68,10 @@ public class UsersTests {
 				String newEmail = "newEmail@gmail.com";
 				user.userNameEmail = newEmail;
 
-				JsonNode node = play.libs.Json.toJson(user);
+				JsonNode json = play.libs.Json.toJson(user);
 
-				routeAndCall(fakeRequest(POST, "/update")
-					.withJsonBody(node));
+				callAction(controllers.routes.ref.Users.updateUser(),
+						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 				
 				user = User.findByName(newEmail);
 				assertThat(user).isNotNull();
@@ -113,8 +113,8 @@ public class UsersTests {
 //				Build json and send
 				JsonNode json = play.libs.Json.toJson(user);
 				
-				routeAndCall(fakeRequest(POST, "/delete")
-					.withJsonBody(json));
+				callAction(controllers.routes.ref.Users.deleteUser(),
+						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 
 //				Attempt to retrieve user and child				
 				user = User.findByName("prasith@vaccinekeeper.com");

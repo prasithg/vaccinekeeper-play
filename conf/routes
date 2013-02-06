@@ -10,13 +10,10 @@ GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 
 
 # Users
-#Tried using the delete method but routeAndCall(fakeRequest(DELETE, "/delete") in callDeleteUser() does not delete
-#FYI PUT doesn't seem to work either... could be something to do with JSON
-
 GET		/users						controllers.Users.index()
-POST	/register					controllers.Users.registerUser()
-POST	/delete						controllers.Users.deleteUser()
-POST	/update						controllers.Users.updateUser()
+POST	/user						controllers.Users.registerUser()
+PUT		/user						controllers.Users.updateUser()
+DELETE	/user						controllers.Users.deleteUser()
 
 
 # Children
