@@ -1,25 +1,19 @@
 package controllers;
 import static org.fest.assertions.Assertions.assertThat;
-import static play.mvc.Http.Status.*;
 import static play.test.Helpers.*;
-import org.apache.commons.lang.RandomStringUtils;
 
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import models.Child;
-import models.Family;
-import models.Schedule;
+import models.Child.Sex;
 import models.User;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
 
-import play.mvc.Content;
-import play.mvc.Http.Status;
 import play.mvc.Result;
 
 public class ChildrenTests {
@@ -71,7 +65,60 @@ public class ChildrenTests {
 	
 	
 	
+//	Test suspended, don't know how to add url parameters to the FakeRequest
+//	@Test
+	public void callAddChild(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				User user = User.findOne();
+				String name = "Douglas";
+
+				JsonNode json = play.libs.Json.toJson(new Child(name, new Date().getTime(),Sex.MALE));
+				
+//				Adding parameters like this "/child?id="+user._id does not work
+				Result result = routeAndCall(fakeRequest(POST, "/child")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(json));
+
+				System.out.println(play.test.Helpers.contentAsString(result));
+//				Child child = Child.findOneById(child._id);
+//				assertThat(child.firstName).isEqualTo(name);
+			}
+		});
+	}
+
+	@Test
+	public void callEditChild(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				User user = User.findOne();
+				Child child = Child.findOneById(user.childIds.get(1));
+				String name = "Dougy";
+				child.firstName = name;
+				
+				JsonNode json = play.libs.Json.toJson(child);
+				
+				Result result = routeAndCall(fakeRequest(POST, "/editChild")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(json));
 
 
+				child = Child.findOneById(user.childIds.get(1));
+				assertThat(child.firstName).isEqualTo(name);
+			}
+		});
+	}
+
+	@Test
+	public void callDeleteChild(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				
+			}
+		});
+	}
 
 }

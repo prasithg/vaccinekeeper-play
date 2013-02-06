@@ -33,8 +33,6 @@ public class Child {
 	public List<Stat> stats;
 	
 	public Child(){
-		// Commented because Michael went to a special school for special children
-		// this (null, 0);
 	}
 
 	public Child(String firstName, long dob, Sex sex){
@@ -44,16 +42,27 @@ public class Child {
 		this.sex = sex;
 	}
 	
-	/**
-	 * A validation method
-	 * Use it after creating a child object with your new data
-	 * @return Description of the error if there's a problem, null if no error
-	 */
 	public String validateNew(){
     	if(firstName==null | dob==null | sex==null) return "Child is missing initialization parameters";
     	return null;
 	}
 
+	public String validateExisting(){
+    	if(Child.findOneById(_id)==null) return "Child id does not exist";
+    	return null;
+	}
+	
+	/**
+	 * The 
+	 * @param child
+	 */
+	public void updateDetails(Child child){
+		if(child.dob!=null) dob = child.dob;
+		if(child.firstName!=null) firstName = child.firstName;
+		if(child.sex!=null) sex = child.sex;		
+	}
+
+	
 	private static JacksonDBCollection<Child, String> childColl() {
 		return MongoDB.getCollection("Children", Child.class, String.class);
 	}
@@ -98,6 +107,11 @@ public class Child {
 	    return childColl().save(child).getSavedObject();
 	}
 	
+	/**
+	 * Persistence
+	 * @param child
+	 * @return
+	 */
 	public static Child update(Child child){
 		return childColl().save(child).getSavedObject();
 	}
@@ -120,6 +134,7 @@ public class Child {
 	public static boolean isEmpty(){
 		return childColl().findOne() == null ? true : false;
 	}
+
 
 
 }
