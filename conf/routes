@@ -28,8 +28,6 @@ POST	/child						controllers.Children.addChild(_id: String)
 DELETE	/child/:childId				controllers.Children.deleteChild(childId: String, userId: String)
 POST	/editChild					controllers.Children.editChild()
 
-PUT		/test						controllers.Children.test()
-
 
 
 # Map static resources from the /public folder to the /assets URL path
