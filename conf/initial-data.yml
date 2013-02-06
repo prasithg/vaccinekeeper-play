@@ -1,0 +1,69 @@
+
+# Vaccines
+
+vaccines:
+
+- !!models.Vaccine
+	shortName:		Hep B
+	longName:		Hepatitis B
+	CDC:			CDC
+	shots:
+		-!!	models.Shot
+			no: 1
+			start: 0
+			end: 0
+		-!!	models.Shot
+			no: 2
+			start: 1
+			end: 2
+		-!!	models.Shot
+			no: 3
+			start: 6
+			end: 18
+
+- !!models.Vaccine
+	shortName:		RV
+	longName:		Rotavirus
+	CDC:			CDC
+	shots:
+		-!!	models.Shot
+			no: 1
+			start: 2
+			end: 2
+		-!!	models.Shot
+			no: 2
+			start: 4
+			end: 4
+		-!!	models.Shot
+			no: 3
+			start: 6
+			end: 6
+				
+# Children
+
+children:
+    - !!models.Child
+		firstName:		Adelaide
+		dob:			1327527774672
+		sex:			FEMALE
+    - !!models.Child
+		firstName:		Douglas
+		dob:			1235943774672
+		sex:			MALE
+
+
+# Users
+
+users:
+
+    - !!models.User
+        userNameEmail:  michael@vaccinekeeper.com
+        password:		password
+        firstName:		Michael
+        lastName:		Janiak
+        createdDate:	1360186974694
+        childIds:
+            - !!String
+                100
+            - !!String
+                101

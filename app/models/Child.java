@@ -71,6 +71,12 @@ public class Child {
 		return MongoDB.getCollection("Vaccines", Vaccine.class, String.class);
 	}
 
+	/**
+	 * This will create a brand new schedule on the Child object
+	 * deleting any existing data, use with care
+	 * @param dob
+	 * @return
+	 */
 	public List<Schedule> createSchedule(long dob){
 		
 		List<Schedule> list = new LinkedList<Schedule>();
