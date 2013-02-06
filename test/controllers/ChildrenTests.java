@@ -1,15 +1,13 @@
 package controllers;
 import static org.fest.assertions.Assertions.assertThat;
-import static play.test.Helpers.POST;
-import static play.test.Helpers.PUT;
 import static play.test.Helpers.callAction;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.fakeRequest;
-import static play.test.Helpers.routeAndCall;
 import static play.test.Helpers.running;
 
 import java.util.Date;
+import java.util.Iterator;
 
 import models.Child;
 import models.Child.Sex;
@@ -25,25 +23,26 @@ import play.mvc.Result;
 public class ChildrenTests {
 
 
-	//	Test suspended, don't know how to add url parameters to the FakeRequest
-	//	@Test
+		@Test
 		public void callAddChild(){
 			running(fakeApplication(), new Runnable(){
 				@Override
 				public void run() {
 					User user = User.findOne();
-					String name = "Douglas";
+					String name = "Hudson";
 	
 					JsonNode json = play.libs.Json.toJson(new Child(name, new Date().getTime(),Sex.MALE));
 					
-	//				Adding parameters like this "/child?id="+user._id does not work
-					Result result = routeAndCall(fakeRequest(POST, "/child")
-						.withHeader("Content-Type", "application/json")
-						.withJsonBody(json));
+					callAction(controllers.routes.ref.Children.addChild(user._id),
+							fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 	
-					System.out.println(play.test.Helpers.contentAsString(result));
-	//				Child child = Child.findOneById(child._id);
-	//				assertThat(child.firstName).isEqualTo(name);
+					Iterator<String> childIds = User.findOneById(user._id).childIds.iterator();
+					
+					boolean flag = false;
+					while(childIds.hasNext()){
+						if(Child.findOneById(childIds.next()).firstName.equals(name)) flag = true;
+					}
+					assertThat(flag).isTrue();
 				}
 			});
 		}
@@ -118,11 +117,12 @@ public class ChildrenTests {
 	
 	
 	
-@Test
+	@Test
 	public void callDeleteChild(){
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
+				
 				
 			}
 		});

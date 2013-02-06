@@ -61,7 +61,9 @@ public class Users extends Controller {
 			if(dbUser==null) return Results.notFound("User id does not exist");
 			
 	//		Update details
-			dbUser.updateDetails(user);
+			String update = dbUser.updateDetails(user);
+			if(update!=null)
+				return Results.badRequest(update);
 			User.update(dbUser);
 			
 			return redirect(routes.Users.index());

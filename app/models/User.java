@@ -64,16 +64,18 @@ public class User {
     	return null;
     }
 
-	
-	
-	public void updateDetails(User user){
-		if(user.userNameEmail!=null) userNameEmail = user.userNameEmail;
+	public String updateDetails(User user){
+		if(user.userNameEmail!=null){
+			if(User.findByName(user.userNameEmail)!=null)
+				return "userName already exists";
+			userNameEmail = user.userNameEmail;
+		}
 		if(user.firstName!=null) firstName = user.firstName;
 		if(user.lastName!=null) lastName = user.lastName;
 		if(user.newPass!=null) password = user.newPass;
+		return null;
 	}
 
-	
 	private static JacksonDBCollection<User, String> userColl() {
 		return MongoDB.getCollection("Users", User.class, String.class);
 	}
