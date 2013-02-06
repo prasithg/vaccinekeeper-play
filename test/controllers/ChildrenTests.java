@@ -81,6 +81,7 @@ public class ChildrenTests {
 						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 	
 	
+				user = User.findOneById(user._id);
 				child = Child.findOneById(user.childIds.get(1));
 				assertThat(child.firstName).isEqualTo(name);
 			}
@@ -122,7 +123,21 @@ public class ChildrenTests {
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
+				User user = User.findOne();
+				Child child = Child.create(new Child("Hudson", new Date().getTime(),Sex.MALE));
+				User.addChild(user._id, child._id);
+
+				JsonNode json = play.libs.Json.toJson(child);	
 				
+				callAction(controllers.routes.ref.Children.deleteChild(child._id, user._id),
+						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
+
+				Iterator<String> childIds = User.findOneById(user._id).childIds.iterator();
+				boolean flag = false;
+				while(childIds.hasNext()){
+					if(Child.findOneById(childIds.next()).firstName.equals(child.firstName)) flag = true;
+				}
+				assertThat(flag).isFalse();
 				
 			}
 		});

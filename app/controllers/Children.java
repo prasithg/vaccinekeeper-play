@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import models.Child;
 import models.Schedule;
@@ -116,9 +117,8 @@ public class Children extends Controller {
 	public static Result deleteChild(String childId, String userId) {
 		
 //		Assume user is logged in - don't need to find user or validate passwords
-			
 		User user = User.findOneById(userId);
-		Iterator<String> childIds = null;
+		Iterator<String> childIds = new LinkedList<String>().iterator();
 		try{
 			childIds = user.childIds.iterator();
 		} catch (NullPointerException e){
@@ -133,8 +133,10 @@ public class Children extends Controller {
 		}
 		if(notThere) return Results.notFound("Child id does not belong to user");
 		
-//		Delete
+//		Delete child and remove from user list
 		Child.delete(childId);
+		user.childIds.remove(childId);
+		User.update(user);
 		
 		return redirect(routes.Users.index());
 	}

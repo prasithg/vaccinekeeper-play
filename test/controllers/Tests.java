@@ -40,20 +40,21 @@ public class Tests {
 			public void run() {
 
 				User user = User.findOne();
+				Child child = Child.findOneById(user.childIds.get(0));
 				
 				List<Family> families = new LinkedList<Family>();
 				List<Child> children = new LinkedList<Child>();
 				
 				Iterator<String> childIds = user.childIds.iterator();
 				while(childIds.hasNext()){
-					Child child = Child.findOneById(childIds.next());
-					if(child!=null) children.add(child);
+					Child c = Child.findOneById(childIds.next());
+					if(c!=null) children.add(c);
 				}
 				Family family = new Family(user, children);
 				families.add(family);
 				
 				Content html = views.html.index.render(families);
-				assertThat(html.body().indexOf("Adelaide")).isNotEqualTo(-1);
+				assertThat(html.body().indexOf(child.firstName)).isNotEqualTo(-1);
 				assertThat(contentType(html)).isEqualTo("text/html");
 			}
 		});
