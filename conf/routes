@@ -21,11 +21,13 @@ POST	/update						controllers.Users.updateUser()
 
 # Children
 #POST    /projects/:project/tasks	controllers.Tasks.add(project: Long, folder: String)
-POST	/schedule					controllers.Children.updateSchedule()
+POST	/schedule					controllers.Children.updateSchedule(id: String)
 GET		/child/:id					controllers.Children.getChild(id: String)
 
 POST	/child						controllers.Children.addChild(_id: String)
 DELETE	/child/:childId				controllers.Children.deleteChild(childId: String, userId: String)
+
+# Change this to PUI /child
 POST	/editChild					controllers.Children.editChild()
 
 

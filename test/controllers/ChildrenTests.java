@@ -1,14 +1,20 @@
 package controllers;
 import static org.fest.assertions.Assertions.assertThat;
-import static play.test.Helpers.*;
+import static play.test.Helpers.POST;
+import static play.test.Helpers.callAction;
+import static play.test.Helpers.contentAsString;
+import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.fakeRequest;
+import static play.test.Helpers.routeAndCall;
+import static play.test.Helpers.running;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import models.Child;
 import models.Child.Sex;
+import models.Schedule;
 import models.User;
+import models.Vaccine;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.codehaus.jackson.JsonNode;
@@ -44,21 +50,19 @@ public class ChildrenTests {
 				Child child = Child.findOne();
 				
 				int index = 5;
-				String rString = RandomStringUtils.randomAlphabetic(5);
-				long lastMod = child.schedule.get(index).lastModified+10;
+				Schedule schedule = child.schedule.get(index);
+				schedule.cancelled = false;
+				schedule.complete = true;
+				schedule.comment = RandomStringUtils.randomAlphabetic(5);
+				schedule.lastModified = child.schedule.get(index).lastModified+10;
+				
+				JsonNode json = play.libs.Json.toJson(schedule);				
 
-				JsonNode node = play.libs.Json.parse(	"{	\"_id\":\""+child._id+"\"," +
-														"\"schedule\":{\"shortName\":\"RV\", \"shot\":3, " +
-														"\"cancelled\":\"false\",\"complete\":\"true\", \"comment\":\""+rString+"\"," +
-														"\"lastModified\": "+lastMod+",\"scheduledDate\":1000}}");				
-
-				routeAndCall(fakeRequest(POST, "/schedule")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(node));
+				callAction(controllers.routes.ref.Children.updateSchedule(child._id),
+						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 
 				child = Child.findOneById(child._id);
-				
-				assertThat(child.schedule.get(index).comment).isEqualTo(rString);
+				assertThat(child.schedule.get(index).comment).isEqualTo(schedule.comment);
 			}
 		});
 	}

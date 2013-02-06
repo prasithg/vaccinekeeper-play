@@ -32,7 +32,7 @@ public class UsersTests {
 			@Override
 			public void run() {
 				
-				User user = User.findByUserName("bill.gates@microsoft.com");
+				User user = User.findByName("bill.gates@microsoft.com");
 				if(user!= null) User.delete(user._id);
 				
 				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\"bill.gates@microsoft.com\"," +
@@ -64,7 +64,7 @@ public class UsersTests {
 			@Override
 			public void run() {
 				
-				User user = User.findByUserName("prasith@vaccinekeeper.com");
+				User user = User.findByName("prasith@vaccinekeeper.com");
 				
 				if(user==null){
 					user = new User("prasith@vaccinekeeper.com", "password");
@@ -88,7 +88,7 @@ public class UsersTests {
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
 
-				user = User.findByUserName("prasith@vaccinekeeper.com");
+				user = User.findByName("prasith@vaccinekeeper.com");
 				
 				assertThat(user).isNull();
 				assertThat(Child.findOneById(childId)).isNull();
@@ -113,7 +113,7 @@ public class UsersTests {
 					.withHeader("Content-Type", "application/json")
 					.withJsonBody(node));
 				
-				user = User.findByUserName(newUserNameEmail);
+				user = User.findByName(newUserNameEmail);
 				assertThat(user).isNotNull();
 
 			}

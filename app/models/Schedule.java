@@ -13,7 +13,7 @@ public class Schedule {
 	public String comment;
 	private final static long msInMonth = 86400000*30;
 
-	Schedule(Vaccine vaccine, int shot, long dob){
+	public Schedule(Vaccine vaccine, int shot, long dob){
 		this.shortName = vaccine.shortName;
 		this.shot = shot;
 		this.startDate = calcStart(vaccine, dob, shot);

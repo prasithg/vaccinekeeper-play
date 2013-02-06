@@ -51,7 +51,7 @@ public class Users extends Controller {
 		String password = json.findPath("password").getTextValue();
 		if(password==null) return Results.notFound("Missing password");
 
-		User user = User.findByUserName(userName);
+		User user = User.findByName(userName);
 		if(user==null) return Results.notFound("User "+userName+" not found");
 		
 		User.delete(user._id);

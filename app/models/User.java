@@ -48,7 +48,7 @@ public class User {
 		EmailValidator valid = new EmailValidator();
 		if(!valid.isValid(userNameEmail)) return "invalid email format";
 
-		User user = User.findByUserName(userNameEmail);
+		User user = User.findByName(userNameEmail);
 		if(user!=null) return "A user with the email "+userNameEmail+" already exists";
 		
         return null;
@@ -84,7 +84,7 @@ public class User {
 		return userColl().findOneById(id);
 	}
 
-	public static User findByUserName(String userNameEmail){
+	public static User findByName(String userNameEmail){
 		DBCursor<User>  cursor = userColl().find(DBQuery.is("userNameEmail", userNameEmail));
 		if(!cursor.hasNext()) return null;
 		return cursor.next();

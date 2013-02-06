@@ -2,6 +2,8 @@ package models;
 
 import java.util.List;
 
+import net.vz.mongodb.jackson.DBCursor;
+import net.vz.mongodb.jackson.DBQuery;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import net.vz.mongodb.jackson.WriteResult;
@@ -32,24 +34,30 @@ public class Vaccine {
 		this.shots = shots;
 	}
 
-	private static JacksonDBCollection<Vaccine, String> collection() {
+	private static JacksonDBCollection<Vaccine, String> coll() {
 		return MongoDB.getCollection("Vaccines", Vaccine.class, String.class);
 	}
 
 	public static boolean isEmpty() {
-		return collection().findOne() == null ? true : false;
+		return coll().findOne() == null ? true : false;
 	}
 
 	public static List<Vaccine> all() {
-		return collection().find().toArray();
+		return coll().find().toArray();
 	}
 
 	public static Vaccine findOneById(String id) {
-		return collection().findOneById(id);
+		return coll().findOneById(id);
 	}
 	
 	public static Vaccine findOne() {
-		return collection().findOne();
+		return coll().findOne();
+	}
+
+	public static Vaccine findByName(String shortName){
+		DBCursor<Vaccine>  cursor = coll().find(DBQuery.is("shortName", shortName));
+		if(!cursor.hasNext()) return null;
+		return cursor.next();
 	}
 
 
@@ -60,17 +68,17 @@ public class Vaccine {
 	 * @return the String id of the persisted object
 	 */
 	public static String create(Vaccine vaccine) {
-		return collection().save(vaccine).getSavedId();
+		return coll().save(vaccine).getSavedId();
 	}
 
 	public static void delete(String id) {
-		Vaccine task = collection().findOneById(id);
+		Vaccine task = coll().findOneById(id);
 		if (task != null)
-			collection().remove(task);
+			coll().remove(task);
 	}
 
 	public static void drop() {
-		collection().drop();
+		coll().drop();
 	}
 
 }

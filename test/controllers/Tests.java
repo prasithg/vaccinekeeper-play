@@ -39,13 +39,17 @@ public class Tests {
 			@Override
 			public void run() {
 
+				Child child = Child.findOne();
+				child.firstName = "Adelaide";
+				Child.update(child);
 				User user = User.findOne();
+				
 				List<Family> families = new LinkedList<Family>();
 				List<Child> children = new LinkedList<Child>();
 				
 				Iterator<String> childIds = user.childIds.iterator();
 				while(childIds.hasNext()){
-					Child child = Child.findOneById(childIds.next());
+					child = Child.findOneById(childIds.next());
 					if(child!=null) children.add(child);
 				}
 				Family family = new Family(user, children);

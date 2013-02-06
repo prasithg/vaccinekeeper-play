@@ -2,7 +2,6 @@ package controllers;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 
 import models.Child;
 import models.Schedule;
@@ -25,10 +24,9 @@ public class Children extends Controller {
 //		Assume user is logged in - don't need to find user or validate passwords
 			
 //		Map child object
-		ObjectMapper mapper = new ObjectMapper();
 		Child child = null;
 		try {
-			child = mapper.readValue(request().body().asJson(), Child.class);
+			child = new ObjectMapper().readValue(request().body().asJson(), Child.class);
 		} catch (IOException e) {
 			return Results.notFound("json is not of format Child");
 		}
@@ -57,10 +55,9 @@ public class Children extends Controller {
 //		Assume user is logged in - don't need to find user or validate passwords
 			
 //		Map child object
-		ObjectMapper mapper = new ObjectMapper();
 		Child child = null;
 		try {
-			child = mapper.readValue(request().body().asJson(), Child.class);
+			child =  new ObjectMapper().readValue(request().body().asJson(), Child.class);
 		} catch (IOException e) {
 			return Results.notFound("json is not of format Child");
 		}
@@ -105,29 +102,23 @@ public class Children extends Controller {
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)
-	public static Result updateSchedule(){
+	public static Result updateSchedule(String _id){
 		
-		//Capture the request and parse
-		JsonNode json = request().body().asJson();
-		String childId = json.findPath("_id").getTextValue();
-		if(childId==null || childId.isEmpty()) return Results.notFound("Missing childId");
+//		Assume user is logged in - don't need to find user or validate passwords
 
-		JsonNode s = json.get("schedule");
-		if(s==null) return Results.notFound("Missing schedule");
-
-		ObjectMapper mapper = new ObjectMapper();
+//		Get the child
+		Child child = Child.findOneById(_id);
+		if(child==null) return Results.notFound("The child id "+_id+" is not valid");
+		
+//		Get the schedule
 		Schedule schedule = null;
 		try {
-			schedule = mapper.readValue(s, Schedule.class);
+			schedule = new ObjectMapper().readValue(request().body().asJson(), Schedule.class);
 		} catch (IOException e) {
 			return Results.notFound("schedule has wrong format");
 		}
 		
-		//Get the child
-		Child child = Child.findOneById(childId);
-		if(child==null) return Results.notFound("The child id "+childId+" is not valid");
-		
-		//Sort through the schedule list
+//		Sort through the child's schedule list
 		Iterator<Schedule> list = child.schedule.iterator();
 		while(list.hasNext()){
 			Schedule sched = list.next();
@@ -145,7 +136,7 @@ public class Children extends Controller {
 		
 		//Persist and send result
 		Child.update(child);
-		return redirect(routes.Children.getChild(childId));
+		return redirect(routes.Children.getChild(_id));
 	}
 	
 }
