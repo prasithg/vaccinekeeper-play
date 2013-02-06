@@ -233,6 +233,12 @@ public class BuildReferenceData {
 			public void run() {
 				
 				User user = User.findByName("prasith@vaccinekeeper.com");
+				if(user==null){
+					user = new User("prasith@vaccinekeeper.com", "password");
+					user = User.create(user);					
+				}
+				
+				user = User.findByName("prasith@vaccinekeeper.com");
 				assertThat(user).isNotNull();
 				
 				user = User.findByName("dude madness");

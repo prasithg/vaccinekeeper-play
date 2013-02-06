@@ -2,6 +2,7 @@ package controllers;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.*;
 import static play.test.Helpers.*;
+
 import org.apache.commons.lang.RandomStringUtils;
 
 import java.util.Calendar;
@@ -32,27 +33,26 @@ public class UsersTests {
 			@Override
 			public void run() {
 				
+//				Delete existing user if he exists
 				User user = User.findByName("bill.gates@microsoft.com");
 				if(user!= null) User.delete(user._id);
 				
-				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\"bill.gates@microsoft.com\"," +
-						"								\"password\":\"password\"}");
+//				Create new user
+				user = new User("bill.gates@microsoft.com","password");
 				
-				Result result = routeAndCall(fakeRequest(POST, "/register")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(node));
+//				Test register
+				JsonNode json = play.libs.Json.toJson(user);
+				
+				Result result = callAction(controllers.routes.ref.Users.registerUser(),
+						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 
 				assertThat(status(result)).isEqualTo(Status.SEE_OTHER);
 
-				node = play.libs.Json.parse("{	\"userNameEmail\":\"bill.gates@microsoft.com\"," +
-						"								\"password\":\"password\"}");
+//				Test repeat register
+				result = callAction(controllers.routes.ref.Users.registerUser(),
+						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 				
-				result = routeAndCall(fakeRequest(POST, "/register")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(node));
-
-				assertThat(status(result)).isEqualTo(Status.NOT_FOUND);
-
+				assertThat(status(result)).isEqualTo(Status.BAD_REQUEST);
 				
 			}
 		});
@@ -65,7 +65,6 @@ public class UsersTests {
 			public void run() {
 				
 				User user = User.findByName("prasith@vaccinekeeper.com");
-				
 				if(user==null){
 					user = new User("prasith@vaccinekeeper.com", "password");
 					user = User.create(user);					

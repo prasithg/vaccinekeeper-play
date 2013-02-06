@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +10,7 @@ import models.Family;
 import models.User;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -24,20 +26,22 @@ public class Users extends Controller {
 
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result registerUser(){
-		JsonNode json = request().body().asJson();
-		
-		String userName = json.findPath("userNameEmail").getTextValue();
-		if(userName==null) return Results.notFound("Missing userNameEmail");
-		
-		String password = json.findPath("password").getTextValue();
-		if(password==null) return Results.notFound("Missing password");
 
-		User user = new User(userName, password);
-		String validation = user.validate();
-		
-		if(validation!= null) return Results.notFound(validation);
-		
-		User.create(user);
+//		Map user object
+		User user = null;
+		try {
+			user = new ObjectMapper().readValue(request().body().asJson(), User.class);
+		} catch (IOException e) {
+			return Results.notFound("json is not of format User");
+		}
+
+//		Validate
+		String val = user.validate();
+		if(val!= null) return Results.badRequest(val);
+
+//		Persist
+		User.create(user);		
+
 		return redirect(routes.Users.index());
 	}
 	
