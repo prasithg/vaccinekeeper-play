@@ -1,6 +1,7 @@
 package controllers;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.POST;
+import static play.test.Helpers.PUT;
 import static play.test.Helpers.callAction;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.fakeApplication;
@@ -14,7 +15,6 @@ import models.Child;
 import models.Child.Sex;
 import models.Schedule;
 import models.User;
-import models.Vaccine;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.codehaus.jackson.JsonNode;
@@ -78,9 +78,8 @@ public class ChildrenTests {
 				
 				JsonNode json = play.libs.Json.toJson(child);
 				
-				Result result = routeAndCall(fakeRequest(POST, "/editChild")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(json));
+				callAction(controllers.routes.ref.Children.updateChild(),
+						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 	
 	
 				child = Child.findOneById(user.childIds.get(1));
