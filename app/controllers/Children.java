@@ -50,7 +50,7 @@ public class Children extends Controller {
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)
-	public static Result editChild() {
+	public static Result updateChild() {
 		
 //		Assume user is logged in - don't need to find user or validate passwords
 			
@@ -75,6 +75,44 @@ public class Children extends Controller {
 	}
 
 	
+	@BodyParser.Of(BodyParser.Json.class)
+		public static Result updateSchedule(String _id){
+			
+	//		Assume user is logged in - don't need to find user or validate passwords
+	
+	//		Get the child
+			Child child = Child.findOneById(_id);
+			if(child==null) return Results.notFound("The child id "+_id+" is not valid");
+			
+	//		Get the schedule
+			Schedule schedule = null;
+			try {
+				schedule = new ObjectMapper().readValue(request().body().asJson(), Schedule.class);
+			} catch (IOException e) {
+				return Results.notFound("schedule has wrong format");
+			}
+			
+	//		Sort through the child's schedule list
+			Iterator<Schedule> list = child.schedule.iterator();
+			while(list.hasNext()){
+				Schedule sched = list.next();
+				if(sched.shortName.equals(schedule.shortName) & sched.shot == schedule.shot){
+					if(schedule.lastModified > sched.lastModified){
+						sched.cancelled = schedule.cancelled;
+						sched.complete = schedule.complete;
+						sched.comment = schedule.comment;
+						sched.lastModified = schedule.lastModified;
+						sched.scheduledDate = schedule.scheduledDate;
+					}
+				break;
+				}
+			}
+			
+			//Persist and send result
+			Child.update(child);
+			return redirect(routes.Children.getChild(_id));
+		}
+
 	public static Result deleteChild(String childId, String userId) {
 		
 //		Assume user is logged in - don't need to find user or validate passwords
@@ -99,44 +137,6 @@ public class Children extends Controller {
 		Child.delete(childId);
 		
 		return redirect(routes.Users.index());
-	}
-
-	@BodyParser.Of(BodyParser.Json.class)
-	public static Result updateSchedule(String _id){
-		
-//		Assume user is logged in - don't need to find user or validate passwords
-
-//		Get the child
-		Child child = Child.findOneById(_id);
-		if(child==null) return Results.notFound("The child id "+_id+" is not valid");
-		
-//		Get the schedule
-		Schedule schedule = null;
-		try {
-			schedule = new ObjectMapper().readValue(request().body().asJson(), Schedule.class);
-		} catch (IOException e) {
-			return Results.notFound("schedule has wrong format");
-		}
-		
-//		Sort through the child's schedule list
-		Iterator<Schedule> list = child.schedule.iterator();
-		while(list.hasNext()){
-			Schedule sched = list.next();
-			if(sched.shortName.equals(schedule.shortName) & sched.shot == schedule.shot){
-				if(schedule.lastModified > sched.lastModified){
-					sched.cancelled = schedule.cancelled;
-					sched.complete = schedule.complete;
-					sched.comment = schedule.comment;
-					sched.lastModified = schedule.lastModified;
-					sched.scheduledDate = schedule.scheduledDate;
-				}
-			break;
-			}
-		}
-		
-		//Persist and send result
-		Child.update(child);
-		return redirect(routes.Children.getChild(_id));
 	}
 	
 }

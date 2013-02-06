@@ -24,7 +24,7 @@ public class User {
 	
 	public String userNameEmail;
 
-	public String password;
+	public String password, newPass;
 	
 	public String firstName, lastName;
 	
@@ -35,12 +35,17 @@ public class User {
 	public User(){
 	}
 	
+	public User(String userNameEmail, String password){
+		this.userNameEmail=userNameEmail;
+		this.password=password;
+	}
+
 	/**
 	 * A validation method
 	 * Use it after creating a user object with your new data
 	 * @return Description of the error if there's a problem, null if no error
 	 */
-    public String validate() {
+    public String validateNew() {
     	if(userNameEmail.isEmpty()) return "userName field is empty";
     	if(password.isEmpty()) return "password field is empty";
     	if(password.length()<6) return "password must be at least 6 characters long";
@@ -53,12 +58,21 @@ public class User {
 		
         return null;
     }
+    
+    public String validateExisting(){
+    	if(!User.findOneById(_id).password.equals(password)) return "Wrong password";
+    	return null;
+    }
 
 	
-	public User(String userNameEmail, String password){
-		this.userNameEmail=userNameEmail;
-		this.password=password;
+	
+	public void updateDetails(User user){
+		if(user.userNameEmail!=null) userNameEmail = user.userNameEmail;
+		if(user.firstName!=null) firstName = user.firstName;
+		if(user.lastName!=null) lastName = user.lastName;
+		if(user.newPass!=null) password = user.newPass;
 	}
+
 	
 	private static JacksonDBCollection<User, String> userColl() {
 		return MongoDB.getCollection("Users", User.class, String.class);

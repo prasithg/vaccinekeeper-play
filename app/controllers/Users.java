@@ -36,7 +36,7 @@ public class Users extends Controller {
 		}
 
 //		Validate
-		String val = user.validate();
+		String val = user.validateNew();
 		if(val!= null) return Results.badRequest(val);
 
 //		Persist
@@ -46,51 +46,47 @@ public class Users extends Controller {
 	}
 	
 	@BodyParser.Of(BodyParser.Json.class)
-	public static Result deleteUser(){
-		JsonNode json = request().body().asJson();
-		
-		String userName = json.findPath("userNameEmail").getTextValue();
-		if(userName==null) return Results.notFound("Missing userNameEmail");
-		
-		String password = json.findPath("password").getTextValue();
-		if(password==null) return Results.notFound("Missing password");
-
-		User user = User.findByName(userName);
-		if(user==null) return Results.notFound("User "+userName+" not found");
-		
-		User.delete(user._id);
-		return redirect(routes.Users.index());
-	}
+		public static Result updateUser(){
+	
+	//		Retrieve user from request
+			User user = null;
+			try {
+				user = new ObjectMapper().readValue(request().body().asJson(), User.class);
+			} catch (IOException e) {
+				return Results.notFound("json is not of format User");
+			}
+	
+	//		Retrieve user from DB 
+			User dbUser = User.findOneById(user._id);
+			if(dbUser==null) return Results.notFound("User id does not exist");
+			
+	//		Update details
+			dbUser.updateDetails(user);
+			User.update(dbUser);
+			
+			return redirect(routes.Users.index());
+		}
 
 	@BodyParser.Of(BodyParser.Json.class)
-	public static Result updateUser(){
-		JsonNode json = request().body().asJson();
+	public static Result deleteUser(){
 		
-		String id = json.findPath("_id").getTextValue();
-		if(id==null) return Results.notFound("Missing id");
-		
-		String password = json.findPath("password").getTextValue();
-		if(password==null) return Results.notFound("Missing password");
-
-		User user = User.findOneById(id);
-		if(user==null) return Results.notFound("User does not exist");
-		if(!password.equals(user.password)) return Results.badRequest("Wrong password");
-		
-		user.userNameEmail=json.findPath("userNameEmail").getTextValue();
-		user.firstName=json.findPath("firstName").getTextValue();
-		user.lastName=json.findPath("lastName").getTextValue();
-		
-		String newPass = json.findPath("newPass").getTextValue();
-		if(newPass!=null){
-			if(!newPass.isEmpty()) user.password = newPass;
+		User user = null;
+		try {
+			user = new ObjectMapper().readValue(request().body().asJson(), User.class);
+		} catch (IOException e) {
+			return Results.notFound("json is not of format User");
 		}
+
+//		I know user is logged in but going to double check the password
+		String val = user.validateExisting();
+		if(val!= null) return Results.badRequest(val);
 		
-		User.update(user);
+//		Remove from db
+		User.delete(user._id);
+		
 		return redirect(routes.Users.index());
 	}
 
-	
-	
 	private static List<Family> getFamilies(){
 		Iterator<User> users = User.all().iterator();
 		List<Family> families = new LinkedList<Family>();

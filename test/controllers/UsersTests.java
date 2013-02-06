@@ -59,17 +59,45 @@ public class UsersTests {
 	}
 	
 	@Test
+	public void callUpdateUser(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				
+				User user = User.findOne();
+				String newEmail = "newEmail@gmail.com";
+				user.userNameEmail = newEmail;
+
+				JsonNode node = play.libs.Json.toJson(user);
+
+				routeAndCall(fakeRequest(POST, "/update")
+					.withJsonBody(node));
+				
+				user = User.findByName(newEmail);
+				assertThat(user).isNotNull();
+				
+				user.userNameEmail = "michael@vaccinekeeper.com";
+				User.update(user);
+
+			}
+		});
+	}
+	
+	
+	@Test
 	public void callDeleteUser(){
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
 				
+//				Ensure user Exists
 				User user = User.findByName("prasith@vaccinekeeper.com");
 				if(user==null){
 					user = new User("prasith@vaccinekeeper.com", "password");
 					user = User.create(user);					
 				}
 				
+//				Ensure user has children
 				if(user.childIds==null){
 					Calendar dob = Calendar.getInstance();
 					dob.set(2009, 8, 25);
@@ -79,14 +107,16 @@ public class UsersTests {
 					user = User.findOneById(user._id);
 				}
 				
+//				Get reference for one child
 				String childId = user.childIds.iterator().next();			
-				JsonNode node = play.libs.Json.parse("{	\"userNameEmail\":\""+user.userNameEmail+"\"," +
-						"								\"password\":\""+user.password+"\"}");
+				
+//				Build json and send
+				JsonNode json = play.libs.Json.toJson(user);
 				
 				routeAndCall(fakeRequest(POST, "/delete")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(node));
+					.withJsonBody(json));
 
+//				Attempt to retrieve user and child				
 				user = User.findByName("prasith@vaccinekeeper.com");
 				
 				assertThat(user).isNull();
@@ -96,28 +126,6 @@ public class UsersTests {
 		});
 	}
 	
-	@Test
-	public void callUpdateUser(){
-		running(fakeApplication(), new Runnable(){
-			@Override
-			public void run() {
-				
-				User user = User.findOne();
-				String newUserNameEmail = "newEmail@gmail.com";
-
-				JsonNode node = play.libs.Json.parse(	"{\"_id\":\""+user._id+"\",\"password\":\""+user.password+"\"," +
-														"\"userNameEmail\":\""+newUserNameEmail+"\"}");				
-
-				routeAndCall(fakeRequest(POST, "/update")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(node));
-				
-				user = User.findByName(newUserNameEmail);
-				assertThat(user).isNotNull();
-
-			}
-		});
-	}
 
 	
 	

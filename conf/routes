@@ -28,7 +28,7 @@ POST	/child						controllers.Children.addChild(_id: String)
 DELETE	/child/:childId				controllers.Children.deleteChild(childId: String, userId: String)
 
 # Change this to PUI /child
-POST	/editChild					controllers.Children.editChild()
+POST	/editChild					controllers.Children.updateChild()
 
 
 

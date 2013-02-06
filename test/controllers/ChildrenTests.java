@@ -25,6 +25,31 @@ import play.mvc.Result;
 public class ChildrenTests {
 
 
+	//	Test suspended, don't know how to add url parameters to the FakeRequest
+	//	@Test
+		public void callAddChild(){
+			running(fakeApplication(), new Runnable(){
+				@Override
+				public void run() {
+					User user = User.findOne();
+					String name = "Douglas";
+	
+					JsonNode json = play.libs.Json.toJson(new Child(name, new Date().getTime(),Sex.MALE));
+					
+	//				Adding parameters like this "/child?id="+user._id does not work
+					Result result = routeAndCall(fakeRequest(POST, "/child")
+						.withHeader("Content-Type", "application/json")
+						.withJsonBody(json));
+	
+					System.out.println(play.test.Helpers.contentAsString(result));
+	//				Child child = Child.findOneById(child._id);
+	//				assertThat(child.firstName).isEqualTo(name);
+				}
+			});
+		}
+
+
+
 	//Test getChild
 	@Test
 	public void callGetChild(){
@@ -41,6 +66,31 @@ public class ChildrenTests {
 
 	
 	
+	@Test
+	public void callUpdateChild(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				User user = User.findOne();
+				Child child = Child.findOneById(user.childIds.get(1));
+				String name = "Dougy";
+				child.firstName = name;
+				
+				JsonNode json = play.libs.Json.toJson(child);
+				
+				Result result = routeAndCall(fakeRequest(POST, "/editChild")
+					.withHeader("Content-Type", "application/json")
+					.withJsonBody(json));
+	
+	
+				child = Child.findOneById(user.childIds.get(1));
+				assertThat(child.firstName).isEqualTo(name);
+			}
+		});
+	}
+
+
+
 	//Would be good to simply callAction on the controller but I'm not sure how to pass in variables with the current setup
 	@Test
 	public void callUpdateSchedule(){
@@ -69,53 +119,7 @@ public class ChildrenTests {
 	
 	
 	
-//	Test suspended, don't know how to add url parameters to the FakeRequest
-//	@Test
-	public void callAddChild(){
-		running(fakeApplication(), new Runnable(){
-			@Override
-			public void run() {
-				User user = User.findOne();
-				String name = "Douglas";
-
-				JsonNode json = play.libs.Json.toJson(new Child(name, new Date().getTime(),Sex.MALE));
-				
-//				Adding parameters like this "/child?id="+user._id does not work
-				Result result = routeAndCall(fakeRequest(POST, "/child")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(json));
-
-				System.out.println(play.test.Helpers.contentAsString(result));
-//				Child child = Child.findOneById(child._id);
-//				assertThat(child.firstName).isEqualTo(name);
-			}
-		});
-	}
-
-	@Test
-	public void callEditChild(){
-		running(fakeApplication(), new Runnable(){
-			@Override
-			public void run() {
-				User user = User.findOne();
-				Child child = Child.findOneById(user.childIds.get(1));
-				String name = "Dougy";
-				child.firstName = name;
-				
-				JsonNode json = play.libs.Json.toJson(child);
-				
-				Result result = routeAndCall(fakeRequest(POST, "/editChild")
-					.withHeader("Content-Type", "application/json")
-					.withJsonBody(json));
-
-
-				child = Child.findOneById(user.childIds.get(1));
-				assertThat(child.firstName).isEqualTo(name);
-			}
-		});
-	}
-
-	@Test
+@Test
 	public void callDeleteChild(){
 		running(fakeApplication(), new Runnable(){
 			@Override
