@@ -41,7 +41,7 @@ public class Children extends Controller {
 		child = Child.create(child);		
 		User.addChild(userId, child._id);
 		
-		return redirect(routes.Children.getChild(child._id));		
+		return ok(play.libs.Json.toJson(child));			
 	}
 	
 	public static Result getChild(String _id){
@@ -70,9 +70,9 @@ public class Children extends Controller {
 //		Update and persist
 		Child dbChild = Child.findOneById(child._id);
 		dbChild.updateDetails(child);
-		Child.update(dbChild);
+		child = Child.update(dbChild);
 		
-		return redirect(routes.Children.getChild(child._id));		
+		return ok(play.libs.Json.toJson(child));			
 	}
 
 	
@@ -104,8 +104,8 @@ public class Children extends Controller {
 			}
 			
 			//Persist and send result
-			Child.update(child);
-			return redirect(routes.Children.getChild(_id));
+			child = Child.update(child);
+			return ok(play.libs.Json.toJson(child));			
 		}
 
 	public static Result deleteChild(String childId, String userId) {
@@ -132,7 +132,7 @@ public class Children extends Controller {
 		user.childIds.remove(childId);
 		User.update(user);
 		
-		return redirect(routes.Users.index());
+		return redirect(routes.Users.getUser(userId));
 	}
 	
 }

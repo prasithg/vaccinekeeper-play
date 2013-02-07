@@ -33,10 +33,6 @@ public class UsersTests {
 			@Override
 			public void run() {
 				
-//				Delete existing user if he exists
-//				User user = User.findByName("bill.gates@microsoft.com");
-//				if(user!= null) User.delete(user._id);
-				
 //				Create new user
 				User user = new User("bill.gates@microsoft.com","password");
 				
@@ -46,7 +42,7 @@ public class UsersTests {
 				Result result = callAction(controllers.routes.ref.Users.registerUser(),
 						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 
-				assertThat(status(result)).isEqualTo(Status.SEE_OTHER);
+				assertThat(status(result)).isEqualTo(Status.OK);
 
 //				Test repeat register
 				result = callAction(controllers.routes.ref.Users.registerUser(),
@@ -103,12 +99,7 @@ public class UsersTests {
 			@Override
 			public void run() {
 				
-//				Ensure user Exists
 				User user = User.findByName("prasith@vaccinekeeper.com");
-//				if(user==null){
-//					user = new User("prasith@vaccinekeeper.com", "password");
-//					user = User.create(user);					
-//				}
 				
 //				Ensure user has children
 				if(user.childIds==null){

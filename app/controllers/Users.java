@@ -41,14 +41,15 @@ public class Users extends Controller {
 		if(val!= null) return Results.badRequest(val);
 
 //		Persist
-		User.create(user);		
+		user = User.create(user);		
 
-		return redirect(routes.Users.index());
+		return ok(play.libs.Json.toJson(user));	
 	}
 	
 	public static Result getUser(String _id){
 		User user = User.findOneById(_id);
 		if (user == null ) return Results.notFound("The user id "+_id+" is not valid");
+
 		return ok(play.libs.Json.toJson(user));	
 	}
 	
@@ -72,9 +73,9 @@ public class Users extends Controller {
 			String update = dbUser.updateDetails(user);
 			if(update!=null)
 				return Results.badRequest(update);
-			User.update(dbUser);
+			user = User.update(dbUser);
 			
-			return redirect(routes.Users.index());
+			return ok(play.libs.Json.toJson(user));	
 		}
 
 	@BodyParser.Of(BodyParser.Json.class)

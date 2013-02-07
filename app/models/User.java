@@ -112,8 +112,8 @@ public class User {
 	    return userColl().save(user).getSavedObject();
 	}
 	
-	public static String update(User user){
-		return userColl().save(user).getSavedId();
+	public static User update(User user){
+		return userColl().save(user).getSavedObject();
 	}
 	
 	public static void delete(String id) {
