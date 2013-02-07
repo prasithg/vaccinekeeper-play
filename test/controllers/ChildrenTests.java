@@ -49,7 +49,6 @@ public class ChildrenTests {
 
 
 
-	//Test getChild
 	@Test
 	public void callGetChild(){
 		running(fakeApplication(), new Runnable(){

@@ -59,6 +59,19 @@ public class UsersTests {
 	}
 	
 	@Test
+	public void callGetUser(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				User user = User.findOne();
+				Result result = callAction(controllers.routes.ref.Users.getUser(user._id));
+				assertThat(play.libs.Json.parse(contentAsString(result)).get("userNameEmail").asText()).isEqualTo(user.userNameEmail);				
+			}
+		});
+	}
+
+	
+	@Test
 	public void callUpdateUser(){
 		running(fakeApplication(), new Runnable(){
 			@Override

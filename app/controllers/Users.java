@@ -46,6 +46,13 @@ public class Users extends Controller {
 		return redirect(routes.Users.index());
 	}
 	
+	public static Result getUser(String _id){
+		User user = User.findOneById(_id);
+		if (user == null ) return Results.notFound("The user id "+_id+" is not valid");
+		return ok(play.libs.Json.toJson(user));			
+	}
+	
+	
 	@BodyParser.Of(BodyParser.Json.class)
 		public static Result updateUser(){
 	

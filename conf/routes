@@ -10,17 +10,18 @@ GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
 
 
 # Users
-GET		/users						controllers.Users.index()
 POST	/user						controllers.Users.registerUser()
+GET		/user						controllers.Users.getUser(id: String)
 PUT		/user						controllers.Users.updateUser()
 DELETE	/user						controllers.Users.deleteUser()
 
+GET		/users						controllers.Users.index()
 
 # Children
-POST	/child						controllers.Children.addChild(_id: String)
-GET		/child/:id					controllers.Children.getChild(id: String)
+POST	/child						controllers.Children.addChild(id: String)
+GET		/child						controllers.Children.getChild(id: String)
 PUT		/child						controllers.Children.updateChild()
-DELETE	/child/:childId				controllers.Children.deleteChild(childId: String, userId: String)
+DELETE	/child						controllers.Children.deleteChild(childId: String, userId: String)
 
 PUT		/schedule					controllers.Children.updateSchedule(id: String)
 

@@ -20,7 +20,7 @@ import play.mvc.Results;
 public class Children extends Controller {
 
 	@BodyParser.Of(BodyParser.Json.class)
-	public static Result addChild(String _id) {
+	public static Result addChild(String userId) {
 		
 //		Assume user is logged in - don't need to find user or validate passwords
 			
@@ -39,14 +39,14 @@ public class Children extends Controller {
 //		Persist
 		child = new Child(child.firstName, child.dob, child.sex);
 		child = Child.create(child);		
-		User.addChild(_id, child._id);
+		User.addChild(userId, child._id);
 		
 		return redirect(routes.Children.getChild(child._id));		
 	}
 	
-	public static Result getChild(String childId){
-		Child child = Child.findOneById(childId);
-		if (child == null ) return Results.notFound("The child id "+childId+" is not valid");
+	public static Result getChild(String _id){
+		Child child = Child.findOneById(_id);
+		if (child == null ) return Results.notFound("The child id "+_id+" is not valid");
 		return ok(play.libs.Json.toJson(child));			
 	}
 
