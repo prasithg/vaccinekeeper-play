@@ -57,9 +57,9 @@ public class Child {
 	 * @param child
 	 */
 	public void updateDetails(Child child){
-		if(child.dob!=null) dob = child.dob;
 		if(child.firstName!=null) firstName = child.firstName;
 		if(child.sex!=null) sex = child.sex;		
+		if(child.dob!=null) dob = child.dob;
 	}
 
 	
