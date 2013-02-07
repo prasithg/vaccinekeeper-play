@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class BuildReferenceData {
 
-//	@Test
+	@Test
 	public void testCleanAndSave() {
 		running(fakeApplication(), new Runnable() {
 
@@ -225,20 +225,20 @@ public class BuildReferenceData {
 		});
 	}
 
-//	@Test
+	@Test
 	public void testUserNameSearch(){
 		running(fakeApplication(), new Runnable(){
 
 			@Override
 			public void run() {
 				
-				User user = User.findByName("prasith@vaccinekeeper.com");
-				if(user==null){
-					user = new User("prasith@vaccinekeeper.com", "password");
-					user = User.create(user);					
-				}
+//				User user = User.findByName("prasith@vaccinekeeper.com");
+//				if(user==null){
+//					user = new User("prasith@vaccinekeeper.com", "password");
+//					user = User.create(user);					
+//				}
 				
-				user = User.findByName("prasith@vaccinekeeper.com");
+				User user = User.findByName("prasith@vaccinekeeper.com");
 				assertThat(user).isNotNull();
 				
 				user = User.findByName("dude madness");

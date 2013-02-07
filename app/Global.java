@@ -41,14 +41,18 @@ public class Global extends GlobalSettings {
             
             User.drop();
             if(User.all().size() == 0 ){
-                Iterator<Object> users = all.get("users").iterator();
-            	while(users.hasNext()){
-            		User user = (User)users.next();
-            		List<String> list = new LinkedList<String>();
-            		list.add(childIds.get(0));
-            		user.childIds= list;
-            		User.create(user);
-            	}
+                List<Object> users = all.get("users");
+        		User user = (User)users.get(0);
+        		user.childIds = new LinkedList<String>();
+        		user.childIds.add(childIds.get(0));
+        		user.childIds.add(childIds.get(1));
+        		User.create(user);
+        		
+        		user = (User)users.get(1);
+        		user.childIds = new LinkedList<String>();
+        		user.childIds.add(childIds.get(2));
+        		user.childIds.add(childIds.get(3));
+        		User.create(user);
             }
         }
         

@@ -23,7 +23,7 @@ import play.mvc.Result;
 public class ChildrenTests {
 
 
-//		@Test
+		@Test
 		public void callAddChild(){
 			running(fakeApplication(), new Runnable(){
 				@Override
@@ -50,7 +50,7 @@ public class ChildrenTests {
 
 
 	//Test getChild
-//	@Test
+	@Test
 	public void callGetChild(){
 		running(fakeApplication(), new Runnable(){
 			@Override
@@ -65,7 +65,7 @@ public class ChildrenTests {
 
 	
 	
-//	@Test
+	@Test
 	public void callUpdateChild(){
 		running(fakeApplication(), new Runnable(){
 			@Override
@@ -91,7 +91,7 @@ public class ChildrenTests {
 
 
 	//Would be good to simply callAction on the controller but I'm not sure how to pass in variables with the current setup
-//	@Test
+	@Test
 	public void callUpdateSchedule(){
 		running(fakeApplication(), new Runnable(){
 			@Override
@@ -118,7 +118,7 @@ public class ChildrenTests {
 	
 	
 	
-//	@Test
+	@Test
 	public void callDeleteChild(){
 		running(fakeApplication(), new Runnable(){
 			@Override
