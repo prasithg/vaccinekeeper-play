@@ -34,11 +34,11 @@ public class UsersTests {
 			public void run() {
 				
 //				Delete existing user if he exists
-				User user = User.findByName("bill.gates@microsoft.com");
-				if(user!= null) User.delete(user._id);
+//				User user = User.findByName("bill.gates@microsoft.com");
+//				if(user!= null) User.delete(user._id);
 				
 //				Create new user
-				user = new User("bill.gates@microsoft.com","password");
+				User user = new User("bill.gates@microsoft.com","password");
 				
 //				Test register
 				JsonNode json = play.libs.Json.toJson(user);
@@ -92,10 +92,10 @@ public class UsersTests {
 				
 //				Ensure user Exists
 				User user = User.findByName("prasith@vaccinekeeper.com");
-				if(user==null){
-					user = new User("prasith@vaccinekeeper.com", "password");
-					user = User.create(user);					
-				}
+//				if(user==null){
+//					user = new User("prasith@vaccinekeeper.com", "password");
+//					user = User.create(user);					
+//				}
 				
 //				Ensure user has children
 				if(user.childIds==null){
