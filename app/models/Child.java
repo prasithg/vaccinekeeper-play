@@ -38,7 +38,7 @@ public class Child {
 	public Child(String firstName, long dob, Sex sex){
 		this.firstName = firstName;
 		this.dob = dob;
-		this.schedule = createSchedule(dob);
+		createSchedule();
 		this.sex = sex;
 	}
 	
@@ -72,23 +72,21 @@ public class Child {
 	}
 
 	/**
-	 * This will create a brand new schedule on the Child object
-	 * deleting any existing data, use with care
-	 * @param dob
-	 * @return
+	 * This will create a brand new schedule for the Child object
+	 * @param 
+	 * @return this
 	 */
-	public List<Schedule> createSchedule(long dob){
+	public Child createSchedule(){
 		
-		List<Schedule> list = new LinkedList<Schedule>();
+		schedule = new LinkedList<Schedule>();
 		DBCursor<Vaccine> vaccines = vaccineColl().find();
 		while(vaccines.hasNext()){
 			Vaccine vaccine = vaccines.next();
 			Iterator<Shot> shots = vaccine.shots.iterator();
-			while (shots.hasNext()){
-				list.add(new Schedule(vaccine, shots.next().no, dob));
-			}
-		}		
-		return list;
+			while (shots.hasNext())
+				schedule.add(new Schedule(vaccine, shots.next().no, dob));
+		}
+		return this;
 	}	
 
 	public static Child findOneById(String id) {

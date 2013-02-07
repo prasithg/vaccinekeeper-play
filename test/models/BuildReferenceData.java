@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class BuildReferenceData {
 
-	@Test
+//	@Test
 	public void testCleanAndSave() {
 		running(fakeApplication(), new Runnable() {
 
@@ -41,7 +41,7 @@ public class BuildReferenceData {
 		});
 	}
 
-	@Test
+//	@Test
 	public void buildGenericSchedule() {
 		running(fakeApplication(), new Runnable() {
 
@@ -160,7 +160,7 @@ public class BuildReferenceData {
 	}
 	
 	
-	@Test
+//	@Test
 	public void buildUsersAndChildren(){
 		running(fakeApplication(), new Runnable(){
 
@@ -225,7 +225,7 @@ public class BuildReferenceData {
 		});
 	}
 
-	@Test
+//	@Test
 	public void testUserNameSearch(){
 		running(fakeApplication(), new Runnable(){
 

@@ -28,7 +28,7 @@ public class User {
 	
 	public String firstName, lastName;
 	
-	public long createdDate;
+	public long dateCreated;
 	
    	public List<String> childIds;
    	
@@ -107,7 +107,7 @@ public class User {
 	}
 	
 	public static User create(User user) {
-		user.createdDate = new Date().getTime();
+		user.dateCreated = new Date().getTime();
 	    return userColl().save(user).getSavedObject();
 	}
 	
