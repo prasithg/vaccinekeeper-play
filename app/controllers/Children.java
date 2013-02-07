@@ -85,7 +85,7 @@ public class Children extends Controller {
 			Child child = Child.findOneById(_id);
 			if(child==null) return Results.notFound("The child id "+_id+" is not valid");
 			
-	//		Get the schedule
+	//		Get the schedule from JSON
 			Schedule schedule = null;
 			try {
 				schedule = new ObjectMapper().readValue(request().body().asJson(), Schedule.class);
@@ -96,16 +96,10 @@ public class Children extends Controller {
 	//		Sort through the child's schedule list
 			Iterator<Schedule> list = child.schedule.iterator();
 			while(list.hasNext()){
-				Schedule sched = list.next();
-				if(sched.shortName.equals(schedule.shortName) & sched.shot == schedule.shot){
-					if(schedule.lastModified > sched.lastModified){
-						sched.cancelled = schedule.cancelled;
-						sched.complete = schedule.complete;
-						sched.comment = schedule.comment;
-						sched.lastModified = schedule.lastModified;
-						sched.scheduledDate = schedule.scheduledDate;
-					}
-				break;
+				Schedule dbSchedule = list.next();
+				if(dbSchedule.shortName.equals(schedule.shortName) & dbSchedule.shot == schedule.shot){
+					if(dbSchedule.updateDetails(schedule))
+						break;					
 				}
 			}
 			

@@ -40,5 +40,18 @@ public class Schedule {
 	private static long calcEnd(Vaccine vaccine, long dob, int shot){
 		return dob + vaccine.shots.get(shot-1).end*msInMonth;
 	}
+	
+	public boolean updateDetails(Schedule schedule){
+		if(schedule.lastModified > this.lastModified){
+			this.cancelled = schedule.cancelled;
+			this.complete = schedule.complete;
+			this.comment = schedule.comment;
+			this.lastModified = schedule.lastModified;
+			this.scheduledDate = schedule.scheduledDate;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
