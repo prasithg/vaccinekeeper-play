@@ -49,7 +49,7 @@ public class Users extends Controller {
 	public static Result getUser(String _id){
 		User user = User.findOneById(_id);
 		if (user == null ) return Results.notFound("The user id "+_id+" is not valid");
-		return ok(play.libs.Json.toJson(user));			
+		return ok(play.libs.Json.toJson(user));	
 	}
 	
 	

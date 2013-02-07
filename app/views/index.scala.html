@@ -12,7 +12,7 @@
 	<ul>
 		@for(family <- families){
 			<li>
-				<h3>@family.user.userNameEmail, @family.user._id</h3>
+				<h3><a href="@routes.Users.getUser(family.user._id)">@family.user.userNameEmail</a></h3>
 				<ul>
 					@for(child <- family.children){
 						<li><a href="@routes.Children.getChild(child._id)">@child.firstName</a></li>
