@@ -11,6 +11,8 @@ public class Global extends GlobalSettings {
         InitialData.insert(app);
     }
     
+    
+    
 //  Why is this executed as a static class??
     static class InitialData {
         

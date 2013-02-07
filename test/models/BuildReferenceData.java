@@ -181,11 +181,11 @@ public class BuildReferenceData {
 				Calendar dob = Calendar.getInstance();
 				
 				dob.set(2012, 0, 25);
-				Child adelaide = new Child("Adelaide", dob.getTimeInMillis(), Child.Sex.FEMALE);
+				Child adelaide = new Child("Adelaide", dob.getTime().getTime(), Child.Sex.FEMALE);
 				adelaide = Child.create(adelaide);
 				
-				dob.set(2009, 2, 1);
-				Child douglas = new Child("Douglas", dob.getTimeInMillis(), Child.Sex.MALE);
+				dob.set(2009, 3, 1);
+				Child douglas = new Child("Douglas", dob.getTime().getTime(), Child.Sex.MALE);
 				douglas = Child.create(douglas);
 				
 				//Reference children to user and refresh user
@@ -200,7 +200,7 @@ public class BuildReferenceData {
 				
 				//Create and save children			
 				dob.set(2009, 8, 25);
-				Child samina = new Child("Samina", dob.getTimeInMillis(), Child.Sex.FEMALE);
+				Child samina = new Child("Samina", dob.getTime().getTime(), Child.Sex.FEMALE);
 				samina = Child.create(samina);
 				
 				dob.set(2010, 8, 14);

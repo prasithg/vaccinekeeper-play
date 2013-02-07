@@ -5,7 +5,7 @@ vaccines:
     - !!models.Vaccine
         shortName:      Hep B
         longName:       Hepatitis B
-        CDC:            secret
+        CDC:            CDC comment
         shots:
             - !!models.Shot
                 no: 1
@@ -23,31 +23,237 @@ vaccines:
     - !!models.Vaccine
         shortName:      RV
         longName:       Rotavirus
-        CDC:            secret
+        CDC:            CDC comment
         shots:
             - !!models.Shot
                 no: 1
-                start: 0
-                end: 0
+                start: 2
+                end: 2
             - !!models.Shot
                 no: 2
-                start: 1
+                start: 4
+                end: 4
+            - !!models.Shot
+                no: 3
+                start: 6
+                end: 6
+
+    - !!models.Vaccine
+        shortName:      DTaP
+        longName:       Diphtheria, Tetanus, acellular Pertussis
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 2
                 end: 2
+            - !!models.Shot
+                no: 2
+                start: 4
+                end: 4
+            - !!models.Shot
+                no: 3
+                start: 6
+                end: 6
+            - !!models.Shot
+                no: 4
+                start: 15
+                end: 18
+            - !!models.Shot
+                no: 5
+                start: 48
+                end: 60
+
+    - !!models.Vaccine
+        shortName:      Hib
+        longName:       Haemophilus influenzae type b
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 2
+                end: 2
+            - !!models.Shot
+                no: 2
+                start: 4
+                end: 4
+            - !!models.Shot
+                no: 3
+                start: 6
+                end: 6
+            - !!models.Shot
+                no: 4
+                start: 12
+                end: 15
+
+    - !!models.Vaccine
+        shortName:      PCV
+        longName:       Pneumococcal Conjugate
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 2
+                end: 2
+            - !!models.Shot
+                no: 2
+                start: 4
+                end: 4
+            - !!models.Shot
+                no: 3
+                start: 6
+                end: 6
+            - !!models.Shot
+                no: 4
+                start: 12
+                end: 15
+
+    - !!models.Vaccine
+        shortName:      PSSV
+        longName:       Pneumococcal Polysascharide
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 48
+                end: 60
+
+    - !!models.Vaccine
+        shortName:      IPV
+        longName:       Inactivated PolioVirus
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 2
+                end: 2
+            - !!models.Shot
+                no: 2
+                start: 4
+                end: 4
             - !!models.Shot
                 no: 3
                 start: 6
                 end: 18
+            - !!models.Shot
+                no: 4
+                start: 48
+                end: 60
+
+    - !!models.Vaccine
+        shortName:      Flu
+        longName:       Influenza
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 6
+                end: 17
+            - !!models.Shot
+                no: 2
+                start: 18
+                end: 29
+            - !!models.Shot
+                no: 3
+                start: 30
+                end: 41
+            - !!models.Shot
+                no: 4
+                start: 42
+                end: 53
+            - !!models.Shot
+                no: 5
+                start: 54
+                end: 65
+            - !!models.Shot
+                no: 6
+                start: 66
+                end: 77
+
+    - !!models.Vaccine
+        shortName:      MMR
+        longName:       Measles, Mumps, Rubella
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 12
+                end: 15
+            - !!models.Shot
+                no: 2
+                start: 48
+                end: 60
+
+    - !!models.Vaccine
+        shortName:      Var
+        longName:       Varicella
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 12
+                end: 15
+            - !!models.Shot
+                no: 2
+                start: 48
+                end: 60
+
+    - !!models.Vaccine
+        shortName:      Hep A
+        longName:       Hepatitis A
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 12
+                end: 23
+            - !!models.Shot
+                no: 2
+                start: 24
+                end: 60
+
+    - !!models.Vaccine
+        shortName:      MCV4
+        longName:       MeningoCoccal
+        CDC:            CDC comment
+        shots:
+            - !!models.Shot
+                no: 1
+                start: 9
+                end: 60
 
 children:
 
     - !!models.Child
         firstName:      Adelaide
-        dob:            123234
+        dob:            1327505973097
         sex:            FEMALE
+    - !!models.Child
+        firstName:      Douglas
+        dob:            1235921973097
+        sex:            MALE
+    - !!models.Child
+        firstName:      Samina
+        dob:            1253889573097
+        sex:            FEMALE
+    - !!models.Child
+        firstName:      Steve
+        dob:            1284475173097
+        sex:            MALE
         
 users:
 
     - !!models.User
         userNameEmail:  michael@vaccinekeeper.com
+        firstName:      Michael
+        lastName:       Janiak
         password:       password
+        dateCreated:    1357054773097
+
+    - !!models.User
+        userNameEmail:  prasith@vaccinekeeper.com
+        firstName:      Prasith
+        lastName:       Govin
+        password:       password
+        dateCreated:    1357054773097
                 

@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +10,6 @@ import models.Child;
 import models.Family;
 import models.User;
 
-import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import play.mvc.BodyParser;
@@ -31,6 +31,7 @@ public class Users extends Controller {
 		User user = null;
 		try {
 			user = new ObjectMapper().readValue(request().body().asJson(), User.class);
+			user.dateCreated = new Date().getTime();
 		} catch (IOException e) {
 			return Results.notFound("json is not of format User");
 		}

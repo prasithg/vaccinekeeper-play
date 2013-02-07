@@ -28,7 +28,7 @@ public class User {
 	
 	public String firstName, lastName;
 	
-	public long dateCreated;
+	public Long dateCreated;
 	
    	public List<String> childIds;
    	
@@ -38,6 +38,7 @@ public class User {
 	public User(String userNameEmail, String password){
 		this.userNameEmail=userNameEmail;
 		this.password=password;
+		this.dateCreated=new Date().getTime();
 	}
 
 	/**
@@ -115,7 +116,6 @@ public class User {
 		return userColl().save(user).getSavedId();
 	}
 	
-//	TODO need something here to confirm that the deletion happened
 	public static void delete(String id) {
 	    User user = null;
 	    try{
@@ -131,7 +131,7 @@ public class User {
 	    while (children.hasNext()){
 	    	Child.delete(children.next());
 	    }
-	    userColl().remove(user);
+	    WriteResult<User, String> result = userColl().remove(user);
 	}
 	
 	public static void drop() {
