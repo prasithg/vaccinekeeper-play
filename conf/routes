@@ -4,6 +4,8 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+GET		/pingStatus					controllers.Application.pingStatus()
+GET		/loginUser					controllers.Application.loginUser(userNameEmail: String, password: String)
 
 # Vaccines
 GET		/genericSchedule		    controllers.Vaccines.genericSchedule()
@@ -16,6 +18,7 @@ PUT		/user						controllers.Users.updateUser()
 DELETE	/user						controllers.Users.deleteUser()
 
 GET		/users						controllers.Users.index()
+
 
 # Children
 POST	/child						controllers.Children.addChild(id: String)

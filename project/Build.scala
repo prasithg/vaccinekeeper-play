@@ -10,7 +10,9 @@ object ApplicationBuild extends Build {
     val appDependencies = Seq(
     	"org.mongodb" % "mongo-java-driver" % "2.10.1",
 		"net.vz.mongodb.jackson" %% "play-mongo-jackson-mapper" % "1.0.0",
-		"net.sf.opencsv" % "opencsv" % "2.3"
+		"net.sf.opencsv" % "opencsv" % "2.3",
+        "org.jasypt" % "jasypt" % "1.9.0",
+        "com.google.guava" % "guava" % "14.0-rc1"
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
