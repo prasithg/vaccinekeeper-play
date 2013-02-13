@@ -7,6 +7,7 @@ import play.Logger;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Result;
+import play.mvc.Results;
 
 /**
  * Login Interceptor that will make sure the request is authenticated
@@ -36,7 +37,7 @@ public class LoginAction extends Action.Simple {
 		
 		if (login==null){
 			//User is not authenticated or token wasn't passed in
-			//TODO figure out how to send unauthorized error response here
+			return Results.unauthorized();
 		} else {
 			// look up user from db using username from login object
 			Logger.info("Got the Login object from the cache: " + login.userNameEmail);
