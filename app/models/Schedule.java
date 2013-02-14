@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Schedule {
 
+//	TODO: This needs something like a localId that goes from 1 to 20 or whatever, so that Backbone can pull this out easier
+	public int localId;
 	public String shortName;
 	public int shot;
 	public long startDate, endDate;
