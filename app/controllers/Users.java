@@ -21,7 +21,8 @@ import play.mvc.Results;
 public class Users extends Controller {
 
 	public static Result index() {
-		return ok(views.html.index.render(getFamilies()));
+//		TODO: For debugging only
+		return ok(play.libs.Json.toJson(User.all()));	
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)

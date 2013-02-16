@@ -34,7 +34,7 @@ public class Application extends Controller {
 			     .expireAfterAccess(sessionTimeoutMins, TimeUnit.MINUTES).build();
 
 	public static Result index() {
-		return redirect(routes.Users.index());
+		return ok(views.html.index.render());
 	}
 
 	public static Result pingStatus() {

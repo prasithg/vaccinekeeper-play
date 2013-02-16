@@ -1,24 +1,53 @@
-@(families: List[Family])
-
-@import helper._
-
+@()
 
 @main("VaccineKeeper") {
     
+<div class="container">
 	<h1>VaccineKeeper</h1>
-	<h2>Immunizing America since 2012</h2>
-	<a href="@routes.Vaccines.genericSchedule">@routes.Vaccines.genericSchedule</a>
-	<h2>Users</h2>
-	<ul>
-		@for(family <- families){
-			<li>
-				<h3><a href="@routes.Users.getUser(family.user._id)">@family.user.userNameEmail</a></h3>
-				<ul>
-					@for(child <- family.children){
-						<li><a href="@routes.Children.getChild(child._id)">@child.firstName</a></li>
-					}
-				</ul>
-			</li>
-		}
-	</ul>
+	<p><i class="icon-search"></i> Search</p>
+</div>
+    
+      
+    
+<script id="addContactsTemplate" type="text/template">
+</script>  
+
+
+<!-- Use Require.js instead of all this -->
+<script src="@routes.Assets.at("javascripts/libraries/jquery.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/libraries/underscore-min.js")" type="text/javascript"></script >
+<script src="@routes.Assets.at("javascripts/libraries/backbone-min.js")" type="text/javascript"></script >
+<script src="@routes.Assets.at("javascripts/libraries/bootstrap.min.js")" type="text/javascript"></script >
+
+<script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script >
+<script src="@routes.Assets.at("javascripts/models.js")" type="text/javascript"></script >
+<script src="@routes.Assets.at("javascripts/collections.js")" type="text/javascript"></script >
+<script src="@routes.Assets.at("javascripts/views.js")" type="text/javascript"></script >
+<script src="@routes.Assets.at("javascripts/router.js")" type="text/javascript"></script >
+
+<!-- Fire everything off -->
+<script>
+//Start the router
+//	new App.Router;
+	
+//Watch for hash tag events
+//	Backbone.history.start();
+	
+//	Create the contacts collection instance
+//	FYI - App.contacts.last() gives the last model in the collection
+//	App.contacts = new App.Collections.Contacts();
+
+//	Fetch contacts then exectute a callback when done
+//	then() http://api.jquery.com/deferred.then/   
+//	App.contacts.fetch().then(function(){
+		
+//		Create a new collection view to hold the collection
+//		new App.Views.App({ collection: App.contacts })
+//	})
+</script>
+
+
+
+
+
 }
