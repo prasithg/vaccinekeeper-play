@@ -3,8 +3,19 @@
 @main("VaccineKeeper") {
     
 <div class="container">
-	<h1>VaccineKeeper</h1>
-	<p><i class="icon-search"></i> Search</p>
+	<h1 class="page-header">VaccineKeeper</h1>
+	<form id="logIn" class="span3 offset3 hero-unit">
+		<h2>Log in</h2>
+		<div class="input-prepend clearfix">
+			<span class="add-on">@@</span>
+			<input type="text" id="userNameEmail" name="userNameEmail" placeholder="Email" >
+		</div>
+		<div class="input-prepend clearfix">
+			<span class="add-on"><i class="icon-lock"></i></span>	
+			<input type="text" id="password" name="password" placeholder="Password" >
+		</div>
+  		<input type="submit" class="btn btn-primary"></input>
+	</form>
 </div>
     
       
