@@ -1,4 +1,4 @@
-App.Models.Contact = Backbone.Model.extend({
+App.Models.Login = Backbone.Model.extend({
 	
 /*	validate: function(attrs){
 		if( ! attrs.firstName || ! attrs.lastName ){
