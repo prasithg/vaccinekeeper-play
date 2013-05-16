@@ -25,6 +25,7 @@ public class Users extends Controller {
 		return ok(play.libs.Json.toJson(User.all()));	
 	}
 
+//	TODO: Eventually this needs to account for users that payed / didn't
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result registerUser(){
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.mongodb.MongoException;
 
+import models.Child.Sex;
 import net.vz.mongodb.jackson.DBCursor;
 import net.vz.mongodb.jackson.DBQuery;
 import net.vz.mongodb.jackson.DBUpdate;
@@ -14,6 +15,7 @@ import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import net.vz.mongodb.jackson.WriteResult;
 import play.data.validation.Constraints.EmailValidator;
+import play.data.validation.Constraints.Required;
 import play.modules.mongodb.jackson.MongoDB;
 //import org.bson.types.ObjectId;
 
@@ -29,6 +31,11 @@ public class User {
 	public String firstName, lastName;
 	
 	public Long dateCreated;
+	
+//	TODO: Add PaymentOption into the object definition
+	public enum PaymentOption {FREE, ONEOFF, REGISTERED}
+	
+	public PaymentOption payment;
 	
    	public List<String> childIds;
    	
