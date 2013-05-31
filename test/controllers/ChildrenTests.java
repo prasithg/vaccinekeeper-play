@@ -70,6 +70,8 @@ public class ChildrenTests {
 		running(fakeApplication(), new Runnable(){
 			@Override
 			public void run() {
+				
+				//TODO: Don't look for children like this. Find children based on the userId
 				User user = User.findOne();
 				Child child = Child.findOneById(user.childIds.get(1));
 				String name = "Dougy";
@@ -129,6 +131,7 @@ public class ChildrenTests {
 
 				JsonNode json = play.libs.Json.toJson(child);	
 				
+//				TODO: deleteChild should not need a userId
 				callAction(controllers.routes.ref.Children.deleteChild(child._id, user._id),
 						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 

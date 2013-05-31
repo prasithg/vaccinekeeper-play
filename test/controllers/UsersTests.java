@@ -101,7 +101,7 @@ public class UsersTests {
 				
 				User user = User.findByName("prasith@vaccinekeeper.com");
 				
-//				Ensure user has children
+//				TODO: User should have no child references
 				if(user.childIds==null){
 					Calendar dob = Calendar.getInstance();
 					dob.set(2009, 8, 25);

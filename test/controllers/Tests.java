@@ -39,6 +39,8 @@ public class Tests {
 			@Override
 			public void run() {
 
+				
+//				TODO: users should not hold references to children
 				User user = User.findOne();
 				Child child = Child.findOneById(user.childIds.get(0));
 				
