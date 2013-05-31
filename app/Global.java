@@ -29,6 +29,8 @@ public class Global extends GlobalSettings {
                 	Vaccine.create((Vaccine) vaccines.next());
             }
             
+//          TODO rebuild global to build users first, then add userId to the child object second (userId on the child object should be indexed)
+            
             Child.drop();
             List<String> childIds = new LinkedList<String>();
             if(Child.all().size() == 0 ){

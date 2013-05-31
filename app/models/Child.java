@@ -22,6 +22,10 @@ public class Child {
 	@Required
 	public Long dob;
 	
+//	TODO: Add reverse link to parent. Should be indexed
+	@Required
+	public String userId;
+	
 	public enum Sex {MALE, FEMALE}
 	
 	@Required

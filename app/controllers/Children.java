@@ -19,6 +19,10 @@ import play.mvc.Results;
 
 public class Children extends Controller {
 
+	public static Result getChildren(String userId){
+		return TODO;
+	}
+	
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result addChild(String userId) {
 		
