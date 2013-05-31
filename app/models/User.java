@@ -37,6 +37,7 @@ public class User {
 	
 	public PaymentOption payment;
 	
+//	TODO: Remove this
    	public List<String> childIds;
    	
 	public User(){
@@ -88,6 +89,7 @@ public class User {
 		return MongoDB.getCollection("Users", User.class, String.class);
 	}
 
+//	TODO: remove this, user should have nothing to do with adding a child, except to input their id
 	public static void addChild(String userId, String childId){
 		userColl().updateById(userId, DBUpdate.push("childIds", childId));
 	}
@@ -123,6 +125,7 @@ public class User {
 		return userColl().save(user).getSavedObject();
 	}
 	
+//	TODO: Delete user should query the Child collection for Children with its own userId
 	public static void delete(String id) {
 	    User user = null;
 	    try{

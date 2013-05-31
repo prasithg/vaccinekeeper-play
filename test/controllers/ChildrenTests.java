@@ -36,6 +36,7 @@ public class ChildrenTests {
 					callAction(controllers.routes.ref.Children.addChild(user._id),
 							fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 	
+					//TODO: Add child should just take a userId and a birthday, that's it
 					Iterator<String> childIds = User.findOneById(user._id).childIds.iterator();
 					
 					boolean flag = false;

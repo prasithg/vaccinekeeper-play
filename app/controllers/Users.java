@@ -100,22 +100,4 @@ public class Users extends Controller {
 		return redirect(routes.Users.index());
 	}
 
-	private static List<Family> getFamilies(){
-		Iterator<User> users = User.all().iterator();
-		List<Family> families = new LinkedList<Family>();
-		
-		while(users.hasNext()){
-			User user = users.next();
-			List<Child> children = new LinkedList<Child>();
-			Iterator<String> childIds = new LinkedList<String>().iterator();
-			if(user.childIds != null) childIds = user.childIds.iterator();
-			while(childIds.hasNext()){
-				Child child = Child.findOneById(childIds.next());
-				if (child!=null) children.add(child);
-			}
-			Family family = new Family(user, children);
-			families.add(family);
-		}
-		return families;
-	}
 }

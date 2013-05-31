@@ -41,6 +41,7 @@ public class Children extends Controller {
 		if(val!= null) return Results.badRequest(val);
 
 //		Persist
+//		TODO: This should just take a userId and then you don't have to run the User.addChild method
 		child = new Child(child.firstName, child.dob, child.sex);
 		child = Child.create(child);		
 		User.addChild(userId, child._id);
@@ -113,6 +114,7 @@ public class Children extends Controller {
 		}
 
 	public static Result deleteChild(String childId, String userId) {
+//		TODO: Update this so that you can delete a child without touching a user
 		
 //		Assume user is logged in - don't need to find user or validate passwords
 		User user = User.findOneById(userId);
