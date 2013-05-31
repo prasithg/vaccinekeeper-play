@@ -21,11 +21,12 @@ GET		/users						controllers.Users.index()
 
 
 # Children
-POST	/child						controllers.Children.addChild(id: String)
+POST	/child						controllers.Children.addChild()
 GET		/child						controllers.Children.getChild(id: String)
 PUT		/child						controllers.Children.updateChild()
-DELETE	/child						controllers.Children.deleteChild(childId: String, userId: String)
+DELETE	/child						controllers.Children.deleteChild(id: String)
 
+GET		/children					controllers.Children.getChildren(userId: String)
 PUT		/schedule					controllers.Children.updateSchedule(id: String)
 
 

@@ -39,23 +39,7 @@ public class Tests {
 			@Override
 			public void run() {
 
-				
-//				TODO: users should not hold references to children
-				User user = User.findOne();
-				Child child = Child.findOneById(user.childIds.get(0));
-				
-				List<Family> families = new LinkedList<Family>();
-				List<Child> children = new LinkedList<Child>();
-				
-				Iterator<String> childIds = user.childIds.iterator();
-				while(childIds.hasNext()){
-					Child c = Child.findOneById(childIds.next());
-					if(c!=null) children.add(c);
-				}
-				Family family = new Family(user, children);
-				families.add(family);
-				
-//				Content html = views.html.index.render(families);
+//				Content html = views.html.index.render("test");
 //				assertThat(html.body().indexOf(child.firstName)).isNotEqualTo(-1);
 //				assertThat(contentType(html)).isEqualTo("text/html");
 			}

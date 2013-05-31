@@ -37,9 +37,6 @@ public class User {
 	
 	public PaymentOption payment;
 	
-//	TODO: Remove this
-   	public List<String> childIds;
-   	
 	public User(){
 	}
 	
@@ -47,6 +44,10 @@ public class User {
 		this.userNameEmail=userNameEmail;
 		this.password=password;
 		this.dateCreated=new Date().getTime();
+	}
+
+	private static JacksonDBCollection<User, String> userColl() {
+		return MongoDB.getCollection("Users", User.class, String.class);
 	}
 
 	/**
@@ -85,15 +86,6 @@ public class User {
 		return null;
 	}
 
-	private static JacksonDBCollection<User, String> userColl() {
-		return MongoDB.getCollection("Users", User.class, String.class);
-	}
-
-//	TODO: remove this, user should have nothing to do with adding a child, except to input their id
-	public static void addChild(String userId, String childId){
-		userColl().updateById(userId, DBUpdate.push("childIds", childId));
-	}
-	
 	public static boolean isEmpty(){
 		return userColl().findOne() == null ? true : false;
 	}
@@ -125,23 +117,35 @@ public class User {
 		return userColl().save(user).getSavedObject();
 	}
 	
-//	TODO: Delete user should query the Child collection for Children with its own userId
-	public static void delete(String id) {
+	/**
+	 * Deletes the user and the user's children
+	 * @param userId
+	 * @return true if deleted, false if not deleted
+	 */
+	public static boolean delete(String userId) {
 	    User user = null;
 	    try{
-		    user = userColl().findOneById(id);	    	
+		    user = userColl().findOneById(userId);	    	
 	    } catch (IllegalArgumentException e) {
-	    	System.out.println("User.delete() could not find user +"+id);
-	    	return;
+	    	return false;
 	    }
 	    
-	    Iterator<String> children = new LinkedList<String>().iterator();
-	    if(user.childIds!=null)
-	    	children = user.childIds.iterator();
-	    while (children.hasNext()){
-	    	Child.delete(children.next());
+	    List<Child> children = Child.getChildren(userId).toArray();
+	    if(children.size()!=0){
+	    	Iterator<Child> it = children.iterator();
+	    	while (it.hasNext()){
+	    		boolean deleted = Child.delete(it.next()._id);
+	    		if (deleted == false) return false;
+	    	}
 	    }
-	    WriteResult<User, String> result = userColl().remove(user);
+	    
+	    try{
+	    	userColl().remove(user);
+	    } catch (MongoException e){
+	    	return false;
+	    }
+
+	    return true;
 	}
 	
 	public static void drop() {

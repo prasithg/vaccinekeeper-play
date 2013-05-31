@@ -29,21 +29,16 @@ public class ChildrenTests {
 				@Override
 				public void run() {
 					User user = User.findOne();
+					int childCount = Child.getChildren(user._id).size();
+					
 					String name = "Hudson";
 	
-					JsonNode json = play.libs.Json.toJson(new Child(name, new Date().getTime(),Sex.MALE));
+					JsonNode json = play.libs.Json.toJson(new Child(user._id, name, new Date().getTime(),Sex.MALE));
 					
-					callAction(controllers.routes.ref.Children.addChild(user._id),
+					callAction(controllers.routes.ref.Children.addChild(),
 							fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 	
-					//TODO: Add child should just take a userId and a birthday, that's it
-					Iterator<String> childIds = User.findOneById(user._id).childIds.iterator();
-					
-					boolean flag = false;
-					while(childIds.hasNext()){
-						if(Child.findOneById(childIds.next()).firstName.equals(name)) flag = true;
-					}
-					assertThat(flag).isTrue();
+					assertThat(Child.getChildren(user._id).size()).isEqualTo(childCount+1);
 				}
 			});
 		}
@@ -71,9 +66,8 @@ public class ChildrenTests {
 			@Override
 			public void run() {
 				
-				//TODO: Don't look for children like this. Find children based on the userId
-				User user = User.findOne();
-				Child child = Child.findOneById(user.childIds.get(1));
+				Child child = Child.findOne();
+				String childId = child._id;
 				String name = "Dougy";
 				child.firstName = name;
 				
@@ -82,9 +76,7 @@ public class ChildrenTests {
 				callAction(controllers.routes.ref.Children.updateChild(),
 						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 	
-	
-				user = User.findOneById(user._id);
-				child = Child.findOneById(user.childIds.get(1));
+				child = Child.findOneById(childId);
 				assertThat(child.firstName).isEqualTo(name);
 			}
 		});
@@ -126,24 +118,35 @@ public class ChildrenTests {
 			@Override
 			public void run() {
 				User user = User.findOne();
-				Child child = Child.create(new Child("Hudson", new Date().getTime(),Sex.MALE));
-				User.addChild(user._id, child._id);
-
+				Child child = Child.create(new Child(user._id, "Hudson", new Date().getTime(),Sex.MALE));
+				String childId = child._id;
+				
 				JsonNode json = play.libs.Json.toJson(child);	
 				
-//				TODO: deleteChild should not need a userId
-				callAction(controllers.routes.ref.Children.deleteChild(child._id, user._id),
+				callAction(controllers.routes.ref.Children.deleteChild(child._id),
 						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 
-				Iterator<String> childIds = User.findOneById(user._id).childIds.iterator();
-				boolean flag = false;
-				while(childIds.hasNext()){
-					if(Child.findOneById(childIds.next()).firstName.equals(child.firstName)) flag = true;
-				}
-				assertThat(flag).isFalse();
+				assertThat(Child.findOneById(childId)).isNull();
 				
 			}
 		});
 	}
+	
+	@Test
+	public void callGetChildren(){
+		running(fakeApplication(), new Runnable(){
+			@Override
+			public void run() {
+				User user = User.findOne();
+				int childCount = Child.getChildren(user._id).size();
+				assertThat(childCount).isEqualTo(2);
+				
+				Result result = callAction(controllers.routes.ref.Children.getChildren(user._id));
+				assertThat(play.libs.Json.parse(contentAsString(result)).size()).isEqualTo(childCount);
+				
+			}
+		});
+	}
+
 
 }

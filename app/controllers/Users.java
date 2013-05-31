@@ -90,9 +90,9 @@ public class Users extends Controller {
 			return Results.notFound("json is not of format User");
 		}
 
-//		I know user is logged in but going to double check the password
+/*		I know user is logged in but going to double check the password
 		String val = user.validateExisting();
-		if(val!= null) return Results.badRequest(val);
+		if(val!= null) return Results.badRequest(val); */
 		
 //		Remove from db
 		User.delete(user._id);

@@ -1,6 +1,5 @@
 package models;
 
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,30 +7,27 @@ import java.util.List;
 import net.vz.mongodb.jackson.DBCursor;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
-import play.data.validation.Constraints.Required;
 import play.modules.mongodb.jackson.MongoDB;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoException;
 
 public class Child {
 	
 	@ObjectId
 	public String _id;
 
-	@Required
 	public String firstName;
 	
-	@Required
 	public Long dob;
 	
-//	TODO: Add reverse link to parent. Should be indexed
-	@Required
+//	TODO: Need to create an index for userId, so the getChildren method is fast
 	public String userId;
 	
 	public enum Sex {MALE, FEMALE}
 	
-	@Required
 	public Sex sex;
 	
-	@Required
 	public List<Schedule> schedule;
 
 	public List<Stat> stats;
@@ -39,33 +35,17 @@ public class Child {
 	public Child(){
 	}
 
-	public Child(String firstName, long dob, Sex sex){
+	public Child(String userId, String firstName, long dob, Sex sex){
+		this.userId = userId;
 		this.firstName = firstName;
 		this.dob = dob;
 		createSchedule();
 		this.sex = sex;
 	}
-	
-	public String validateNew(){
-    	if(firstName==null | dob==null | sex==null) return "Child is missing initialization parameters";
-    	return null;
-	}
 
-	public String validateExisting(){
-    	if(Child.findOneById(_id)==null) return "Child id does not exist";
-    	return null;
+	public Child(String firstName, long dob, Sex sex){
+		this(null, firstName, dob, sex);
 	}
-	
-	/**
-	 * The 
-	 * @param child
-	 */
-	public void updateDetails(Child child){
-		if(child.firstName!=null) firstName = child.firstName;
-		if(child.sex!=null) sex = child.sex;		
-		if(child.dob!=null) dob = child.dob;
-	}
-
 	
 	private static JacksonDBCollection<Child, String> childColl() {
 		return MongoDB.getCollection("Children", Child.class, String.class);
@@ -75,12 +55,31 @@ public class Child {
 		return MongoDB.getCollection("Vaccines", Vaccine.class, String.class);
 	}
 
+	public String validateNew(){
+    	if(userId==null | firstName==null | dob==null | sex==null) return "Child is missing initialization parameters";
+    	return null;
+	}
+
 	/**
-	 * This will create a brand new schedule for the Child object
-	 * @param 
-	 * @return this
+	 * Updates the current child object with the new child's parameters
+	 * @param child
+	 */
+	public Child updateDetails(Child child){
+		if(child.firstName!=null) firstName = child.firstName;
+		if(child.sex!=null) sex = child.sex;		
+		if(child.dob!=null) dob = child.dob;
+		return this;
+	}
+
+	
+	/**
+	 * Create a brand new schedule for the Child object, this method will not persist the child object
+	 * @param
+	 * @return a child with the schedule or null if the child object already has a schedule, or the child object has no dob
 	 */
 	public Child createSchedule(){
+		if(schedule!=null) return null;
+		if(dob==null) return null;
 		
 		schedule = new LinkedList<Schedule>();
 		DBCursor<Vaccine> vaccines = vaccineColl().find();
@@ -91,7 +90,7 @@ public class Child {
 				schedule.add(new Schedule(vaccine, shots.next().no, dob));
 		}
 		return this;
-	}	
+	}
 
 	public static Child findOneById(String id) {
 		Child child = null;
@@ -103,12 +102,13 @@ public class Child {
 		return child;
 	}
 
+	public static DBCursor<Child> getChildren (String userId){
+		return childColl().find().is("userId",userId).limit(10).sort(new BasicDBObject("firstName", 1));
+	}
+	
+	
 	public static Child findOne(){
 		return childColl().findOne();
-	}
-
-	public static List<Child> all() {
-	    return childColl().find().toArray();
 	}
 
 	public static Child create(Child child) {
@@ -124,15 +124,25 @@ public class Child {
 		return childColl().save(child).getSavedObject();
 	}
 
-	public static void delete(String id) {
+	/**
+	 * 
+	 * @param childId
+	 * @return true if deleted false if not
+	 */
+	public static boolean delete(String childId) {
 	    Child child = null;
 	    try{
-		    child = childColl().findOneById(id);	    	
+		    child = childColl().findOneById(childId);	    	
 	    } catch (IllegalArgumentException e) {
-	    	System.out.println("User.delete() could not find user +"+id);
-	    	return;
+	    	System.out.println("Could not find child +"+childId);
+	    	return false;
 	    }
-	    childColl().remove(child);
+	    try{
+	    	childColl().remove(child);
+	    } catch (MongoException e){
+	    	return false;
+	    }
+	    return true;
 	}
 
 	public static void drop() {

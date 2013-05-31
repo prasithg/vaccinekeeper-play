@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import models.Child;
 import models.Schedule;
 import models.User;
+import net.vz.mongodb.jackson.DBCursor;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -20,11 +21,11 @@ import play.mvc.Results;
 public class Children extends Controller {
 
 	public static Result getChildren(String userId){
-		return TODO;
+		return ok(play.libs.Json.toJson(Child.getChildren(userId).toArray()));
 	}
 	
 	@BodyParser.Of(BodyParser.Json.class)
-	public static Result addChild(String userId) {
+	public static Result addChild() {
 		
 //		Assume user is logged in - don't need to find user or validate passwords
 			
@@ -41,10 +42,8 @@ public class Children extends Controller {
 		if(val!= null) return Results.badRequest(val);
 
 //		Persist
-//		TODO: This should just take a userId and then you don't have to run the User.addChild method
-		child = new Child(child.firstName, child.dob, child.sex);
+		child = new Child(child.userId, child.firstName, child.dob, child.sex);
 		child = Child.create(child);		
-		User.addChild(userId, child._id);
 		
 		return ok(play.libs.Json.toJson(child));			
 	}
@@ -68,12 +67,10 @@ public class Children extends Controller {
 			return Results.notFound("json is not of format Child");
 		}
 
-//		Validate
-		String val = child.validateExisting();
-		if(val!= null) return Results.badRequest(val);
-		
 //		Update and persist
 		Child dbChild = Child.findOneById(child._id);
+		if(dbChild==null) return Results.badRequest("childId does not exist");
+		
 		dbChild.updateDetails(child);
 		child = Child.update(dbChild);
 		
@@ -82,13 +79,13 @@ public class Children extends Controller {
 
 	
 	@BodyParser.Of(BodyParser.Json.class)
-		public static Result updateSchedule(String _id){
+		public static Result updateSchedule(String childId){
 			
 	//		Assume user is logged in - don't need to find user or validate passwords
 	
 	//		Get the child
-			Child child = Child.findOneById(_id);
-			if(child==null) return Results.notFound("The child id "+_id+" is not valid");
+			Child child = Child.findOneById(childId);
+			if(child==null) return Results.notFound("The child id "+childId+" is not valid");
 			
 	//		Get the schedule from JSON
 			Schedule schedule = null;
@@ -113,32 +110,14 @@ public class Children extends Controller {
 			return ok(play.libs.Json.toJson(child));			
 		}
 
-	public static Result deleteChild(String childId, String userId) {
-//		TODO: Update this so that you can delete a child without touching a user
-		
-//		Assume user is logged in - don't need to find user or validate passwords
-		User user = User.findOneById(userId);
-		Iterator<String> childIds = new LinkedList<String>().iterator();
-		try{
-			childIds = user.childIds.iterator();
-		} catch (NullPointerException e){
-			return Results.notFound("User does not have children");
-		}
-		
-//		Don't need intense verification but confirm the childId belongs to the parent
-		boolean notThere = true;
-		while(childIds.hasNext()){
-			if(childIds.next().equals(childId))
-				notThere = false;
-		}
-		if(notThere) return Results.notFound("Child id does not belong to user");
+	public static Result deleteChild(String childId) {
 		
 //		Delete child and remove from user list
-		Child.delete(childId);
-		user.childIds.remove(childId);
-		User.update(user);
+		boolean deleted = Child.delete(childId);
 		
-		return redirect(routes.Users.getUser(userId));
+		if(deleted) return Results.ok();
+		else return Results.badRequest();
+		
 	}
 	
 }

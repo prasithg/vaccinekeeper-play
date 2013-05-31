@@ -11,8 +11,6 @@ public class Global extends GlobalSettings {
         InitialData.insert(app);
     }
     
-    
-    
 //  Why is this executed as a static class??
     static class InitialData {
         
@@ -29,35 +27,34 @@ public class Global extends GlobalSettings {
                 	Vaccine.create((Vaccine) vaccines.next());
             }
             
-//          TODO rebuild global to build users first, then add userId to the child object second (userId on the child object should be indexed)
+            User.drop();
+            List<Object> users = all.get("users");
+    		
+            User user1 = (User)users.get(0);
+    		user1 = User.create(user1);
+    		
+    		User user2 = (User)users.get(1);
+    		user2 = User.create(user2);
             
             Child.drop();
-            List<String> childIds = new LinkedList<String>();
-            if(Child.all().size() == 0 ){
-                Iterator<Object> children = all.get("children").iterator();
-            	while(children.hasNext()){
-            		Child child = Child.create(((Child)children.next()).createSchedule());
-            		childIds.add(child._id);
-            	}
-            }
-            
-            User.drop();
-            if(User.all().size() == 0 ){
-                List<Object> users = all.get("users");
-        		User user = (User)users.get(0);
-        		user.childIds = new LinkedList<String>();
-        		user.childIds.add(childIds.get(0));
-        		user.childIds.add(childIds.get(1));
-        		User.create(user);
-        		
-        		user = (User)users.get(1);
-        		user.childIds = new LinkedList<String>();
-        		user.childIds.add(childIds.get(2));
-        		user.childIds.add(childIds.get(3));
-        		User.create(user);
-            }
+            List<Object> children = all.get("children");
+
+            Child child = (Child) children.get(0);
+        	child.userId=user1._id;
+        	Child.create(child.createSchedule());
+        	
+            child = (Child) children.get(1);
+        	child.userId=user1._id;
+        	Child.create(child.createSchedule());
+        	
+            child = (Child) children.get(2);
+         	child.userId=user2._id;
+         	Child.create(child.createSchedule());
+         	
+            child = (Child) children.get(3);
+         	child.userId=user2._id;
+         	Child.create(child.createSchedule());
+            		
         }
-        
-    }
-    
+	}
 }

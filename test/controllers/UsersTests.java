@@ -3,6 +3,8 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.*;
 import static play.test.Helpers.*;
 
+import net.vz.mongodb.jackson.DBCursor;
+
 import org.apache.commons.lang.RandomStringUtils;
 
 import java.util.Calendar;
@@ -99,32 +101,22 @@ public class UsersTests {
 			@Override
 			public void run() {
 				
-				User user = User.findByName("prasith@vaccinekeeper.com");
+				User user = User.findOne();
+				String userId = user._id;
 				
-//				TODO: User should have no child references
-				if(user.childIds==null){
-					Calendar dob = Calendar.getInstance();
-					dob.set(2009, 8, 25);
-					Child child = Child.create(new Child("Samina", dob.getTimeInMillis(), Child.Sex.FEMALE));
-					
-					User.addChild(user._id, child._id);
-					user = User.findOneById(user._id);
-				}
-				
-//				Get reference for one child
-				String childId = user.childIds.iterator().next();			
-				
-//				Build json and send
+//				Build Json and send
 				JsonNode json = play.libs.Json.toJson(user);
 				
 				callAction(controllers.routes.ref.Users.deleteUser(),
 						fakeRequest().withHeader("Content-Type", "application/json").withJsonBody(json));
 
 //				Attempt to retrieve user and child				
-				user = User.findByName("prasith@vaccinekeeper.com");
+				user = User.findOneById(userId);
 				
 				assertThat(user).isNull();
-				assertThat(Child.findOneById(childId)).isNull();
+				
+				
+//				assertThat(Child.getChildren(userId).toArray().size()).isEqualTo(0);
 
 			}
 		});
