@@ -5,7 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET		/pingStatus					controllers.Application.pingStatus()
-GET		/loginUser					controllers.Application.loginUser(userNameEmail: String, password: String)
+POST	/loginUser					controllers.Application.loginUserDev()
 
 # Vaccines
 GET		/genericSchedule		    controllers.Vaccines.genericSchedule()

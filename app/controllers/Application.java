@@ -1,12 +1,13 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import actions.LoginAction;
+//import actions.LoginAction;
 import models.AppStatus;
 import models.LoginUser;
 import models.User;
@@ -74,8 +75,29 @@ public class Application extends Controller {
 		// Return Login Model Object so client can get authToken from it
 		return ok(play.libs.Json.toJson(login));
 	}
+	
+	/**
+	 * Convenience method for logging in a user during testing
+	 * @param takes a user object in the body
+	 * @return
+	 */
+	public static Result loginUserDev() {
 
-	@With(LoginAction.class)
+		User user = null;
+		try {
+			user = new ObjectMapper().readValue(request().body().asJson(), User.class);
+		} catch (IOException e) {
+			return Results.notFound("json is not of format User");
+		}
+
+		String val = user.validateExisting();
+		if (val != null)
+			return Results.unauthorized(val);
+
+		return ok(play.libs.Json.toJson(User.findByName(user.email)));
+	}
+
+//	@With(LoginAction.class)
 	public static Result testLoginAction() {
 		// TODO retrieve User Object from body
 		// User user = null;

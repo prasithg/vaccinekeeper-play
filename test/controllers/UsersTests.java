@@ -63,7 +63,7 @@ public class UsersTests {
 			public void run() {
 				User user = User.findOne();
 				Result result = callAction(controllers.routes.ref.Users.getUser(user._id));
-				assertThat(play.libs.Json.parse(contentAsString(result)).get("userNameEmail").asText()).isEqualTo(user.userNameEmail);				
+				assertThat(play.libs.Json.parse(contentAsString(result)).get("userNameEmail").asText()).isEqualTo(user.email);				
 			}
 		});
 	}
@@ -77,7 +77,7 @@ public class UsersTests {
 				
 				User user = User.findOne();
 				String newEmail = "newEmail@gmail.com";
-				user.userNameEmail = newEmail;
+				user.email = newEmail;
 
 				JsonNode json = play.libs.Json.toJson(user);
 
@@ -87,7 +87,7 @@ public class UsersTests {
 				user = User.findByName(newEmail);
 				assertThat(user).isNotNull();
 				
-				user.userNameEmail = "michael@vaccinekeeper.com";
+				user.email = "michael@vaccinekeeper.com";
 				User.update(user);
 
 			}

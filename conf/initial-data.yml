@@ -244,14 +244,14 @@ children:
 users:
 
     - !!models.User
-        userNameEmail:  michael@vaccinekeeper.com
+        email:  michael@vaccinekeeper.com
         firstName:      Michael
         lastName:       Janiak
         password:       password
         dateCreated:    1357054773097
 
     - !!models.User
-        userNameEmail:  prasith@vaccinekeeper.com
+        email:  prasith@vaccinekeeper.com
         firstName:      Prasith
         lastName:       Govin
         password:       password

@@ -24,7 +24,7 @@ public class User {
 	@ObjectId
 	public String _id;
 	
-	public String userNameEmail;
+	public String email;
 
 	public String password, newPass;
 	
@@ -41,7 +41,7 @@ public class User {
 	}
 	
 	public User(String userNameEmail, String password){
-		this.userNameEmail=userNameEmail;
+		this.email=userNameEmail;
 		this.password=password;
 		this.dateCreated=new Date().getTime();
 	}
@@ -56,29 +56,29 @@ public class User {
 	 * @return Description of the error if there's a problem, null if no error
 	 */
     public String validateNew() {
-    	if(userNameEmail.isEmpty()) return "userName field is empty";
+    	if(email.isEmpty()) return "userName field is empty";
     	if(password.isEmpty()) return "password field is empty";
     	if(password.length()<6) return "password must be at least 6 characters long";
     	
 		EmailValidator valid = new EmailValidator();
-		if(!valid.isValid(userNameEmail)) return "invalid email format";
+		if(!valid.isValid(email)) return "invalid email format";
 
-		User user = User.findByName(userNameEmail);
-		if(user!=null) return "A user with the email "+userNameEmail+" already exists";
+		User user = User.findByName(email);
+		if(user!=null) return "A user with the email "+email+" already exists";
 		
         return null;
     }
     
     public String validateExisting(){
-    	if(!User.findOneById(_id).password.equals(password)) return "Wrong password";
+    	if(!User.findByName(email).password.equals(password)) return "Wrong password";
     	return null;
     }
 
 	public String updateDetails(User user){
-		if(user.userNameEmail!=null){
-			if(User.findByName(user.userNameEmail)!=null)
+		if(user.email!=null){
+			if(User.findByName(user.email)!=null)
 				return "userName already exists";
-			userNameEmail = user.userNameEmail;
+			email = user.email;
 		}
 		if(user.firstName!=null) firstName = user.firstName;
 		if(user.lastName!=null) lastName = user.lastName;
@@ -102,8 +102,8 @@ public class User {
 		return userColl().findOneById(id);
 	}
 
-	public static User findByName(String userNameEmail){
-		DBCursor<User>  cursor = userColl().find(DBQuery.is("userNameEmail", userNameEmail));
+	public static User findByName(String email){
+		DBCursor<User>  cursor = userColl().find(DBQuery.is("email", email));
 		if(!cursor.hasNext()) return null;
 		return cursor.next();
 	}

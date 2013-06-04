@@ -14,12 +14,9 @@ import play.mvc.Results;
  * 
  * @author prasithg
  * 
- */
+ *
 public class LoginAction extends Action.Simple {
 
-	/**
-	 * 
-	 */
 	public Result call(Http.Context ctx) throws Throwable {
 		
 		User user = null;
@@ -50,5 +47,5 @@ public class LoginAction extends Action.Simple {
 		
 		return delegate.call(ctx);
 	}
-
 }
+*/
