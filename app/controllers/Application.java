@@ -94,6 +94,7 @@ public class Application extends Controller {
 		if (val != null)
 			return Results.unauthorized(val);
 
+		session("userId", user._id);
 		return ok(play.libs.Json.toJson(User.findByName(user.email)));
 	}
 
